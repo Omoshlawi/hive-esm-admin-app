@@ -1,11 +1,12 @@
-import * as React from "react";
-import { Link } from "react-router-dom";
+import {
+  HeaderLink,
+  UserHasAccess,
+  withUserAccess,
+} from "@hive/esm-core-components";
 import type { PiletApi } from "@hive/esm-shell-app";
-import { EXTENSION_SLOTS } from "./utils/constants";
-import { NavLink } from "@mantine/core";
-import { IconChevronRight } from "@tabler/icons-react";
-import { HeaderLink, withUserAccess } from "@hive/esm-core-components";
+import * as React from "react";
 import MyOrganizationsPage from "./pages/MyOrganizationsPage";
+import { EXTENSION_SLOTS } from "./utils/constants";
 
 const Page = React.lazy(() => import("./Page"));
 
@@ -17,7 +18,6 @@ export function setup(app: PiletApi) {
     session,
     launchWorkspace,
   } = app;
-
   app.registerPage("/", Page, { layout: "dashboard" });
   app.registerPage(
     "/dashboard/my-organizations",
@@ -25,8 +25,6 @@ export function setup(app: PiletApi) {
       () => (
         <MyOrganizationsPage
           session={session}
-          exitOrganizationContext={exitOrganizationContext}
-          switchOrganizationContext={switchOrganizationContext}
           launchWorkspace={launchWorkspace}
         />
       ),
@@ -44,6 +42,21 @@ export function setup(app: PiletApi) {
   app.registerExtension(
     EXTENSION_SLOTS.DASHBOARD_QUICK_ACTION_SLOT,
     React.lazy(() => import("./components/AddOrganizationQucikAction"))
+  );
+  app.registerExtension(
+    EXTENSION_SLOTS.DASHBOARD_SIDE_NAV_CONTEXT_ITEMS_SLOT,
+    () => (
+      <UserHasAccess
+        component={React.lazy(() => import("./components/ContextSwicher"))}
+        session={session}
+        componentProps={{
+          session,
+          exitOrganizationContext,
+          switchOrganizationContext,
+        }}
+        isAuthenticated={(session) => session.isAuthenticated}
+      />
+    )
   );
   app.registerMenu(
     ({ onClose }) => (

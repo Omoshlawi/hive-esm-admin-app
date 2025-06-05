@@ -1,9 +1,3 @@
-import { PiletApi } from "@hive/esm-shell-app";
-import React, { FC, useMemo } from "react";
-import { useMyOrganizationApi, useMyOrganizations } from "../hooks";
-import { Organization } from "../types";
-import { showNotification } from "@mantine/notifications";
-import { openConfirmModal } from "@mantine/modals";
 import {
   EmptyState,
   ErrorState,
@@ -11,6 +5,7 @@ import {
   TablerIcon,
   When,
 } from "@hive/esm-core-components";
+import { PiletApi } from "@hive/esm-shell-app";
 import {
   ActionIcon,
   Loader,
@@ -19,20 +14,18 @@ import {
   TableData,
   Text,
 } from "@mantine/core";
-import { stat } from "fs";
+import { openConfirmModal } from "@mantine/modals";
+import React, { FC, useMemo } from "react";
 import OrgaznizationForm from "../forms/OrgaznizationForm";
+import { useMyOrganizations } from "../hooks";
+import { Organization } from "../types";
 
 type MyOrganizationsPageProps = Pick<
   PiletApi,
-  | "switchOrganizationContext"
-  | "exitOrganizationContext"
-  | "session"
-  | "launchWorkspace"
+  "session" | "launchWorkspace"
 > & {};
 
 const MyOrganizationsPage: FC<MyOrganizationsPageProps> = ({
-  switchOrganizationContext,
-  exitOrganizationContext,
   session,
   launchWorkspace,
 }) => {
