@@ -8,8 +8,7 @@ import * as React from "react";
 import MyOrganizationsPage from "./pages/MyOrganizationsPage";
 import { EXTENSION_SLOTS } from "./utils/constants";
 import PrivilegesPage from "./pages/PrivilegesPage";
-
-const Page = React.lazy(() => import("./Page"));
+import RolesPage from "./pages/RolesPage";
 
 export function setup(app: PiletApi) {
   const {
@@ -17,7 +16,6 @@ export function setup(app: PiletApi) {
     switchOrganizationContext,
     launchWorkspace,
   } = app;
-  app.registerPage("/", Page, { layout: "dashboard" });
   app.registerPage(
     "/dashboard/my-organizations",
     withUserAccess(
@@ -35,6 +33,17 @@ export function setup(app: PiletApi) {
   app.registerPage(
     "/dashboard/privileges",
     withUserAccess(() => <PrivilegesPage launchWorkspace={launchWorkspace} />, {
+      isAuthenticated: (session) => session.isAuthenticated,
+      requiresAuth: true,
+      fallbackComponent: null,
+    }),
+    {
+      layout: "dashboard",
+    }
+  );
+  app.registerPage(
+    "/dashboard/roles",
+    withUserAccess(() => <RolesPage launchWorkspace={launchWorkspace} />, {
       isAuthenticated: (session) => session.isAuthenticated,
       requiresAuth: true,
       fallbackComponent: null,
@@ -77,6 +86,18 @@ export function setup(app: PiletApi) {
       <HeaderLink
         to="/dashboard/privileges"
         label="Prividges"
+        onClose={onClose ?? (() => {})}
+      />
+    ),
+    {
+      type: "admin",
+    }
+  );
+  app.registerMenu(
+    ({ onClose }: any) => (
+      <HeaderLink
+        to="/dashboard/roles"
+        label="Roles"
         onClose={onClose ?? (() => {})}
       />
     ),

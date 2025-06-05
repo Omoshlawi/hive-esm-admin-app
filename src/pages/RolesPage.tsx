@@ -1,18 +1,3 @@
-import React, { FC, useMemo } from "react";
-import { usePrivileges } from "../hooks";
-import type { PiletApi } from "@hive/esm-shell-app";
-import PriviledgeForm from "../forms/PriviledgeForm";
-import { Privilege } from "../types";
-import { openConfirmModal } from "@mantine/modals";
-import {
-  ActionIcon,
-  Button,
-  Loader,
-  Menu,
-  Table,
-  TableData,
-  Text,
-} from "@mantine/core";
 import {
   EmptyState,
   ErrorState,
@@ -21,32 +6,45 @@ import {
   TableSkeleton,
   When,
 } from "@hive/esm-core-components";
+import { PiletApi } from "@hive/esm-shell-app";
+import {
+  ActionIcon,
+  Button,
+  Menu,
+  Table,
+  TableData,
+  Text,
+} from "@mantine/core";
+import { openConfirmModal } from "@mantine/modals";
 import { IconPlus } from "@tabler/icons-react";
-type PrivilegesPageProps = Pick<PiletApi, "launchWorkspace"> & {};
+import React, { FC, useMemo } from "react";
+import RoleForm from "../forms/RoleForm";
+import { useRoles } from "../hooks";
+import { Role } from "../types";
+type RolesPageProps = Pick<PiletApi, "launchWorkspace"> & {};
 
-const PrivilegesPage: FC<PrivilegesPageProps> = ({ launchWorkspace }) => {
-  const privilegesAsync = usePrivileges();
-  const title = "Privileges";
-  const handleAddOrupdate = (privilege?: Privilege) => {
+const RolesPage: FC<RolesPageProps> = ({ launchWorkspace }) => {
+  const rolesAsync = useRoles();
+  const title = "Roles";
+  const handleAddOrupdate = (role?: Role) => {
     const dispose = launchWorkspace(
-      <PriviledgeForm
-        privilege={privilege}
+      <RoleForm
+        role={role}
         onSuccess={() => dispose()}
         onCloseWorkspace={() => dispose()}
       />,
       {
-        title: privilege ? "Update Privilege" : "Add Privilege",
+        title: role ? "Update Role" : "Add Role",
       }
     );
   };
-
-  const handleDelete = (privilege: Privilege) => {
+  const handleDelete = (role: Role) => {
     openConfirmModal({
       title: "Delete Privilege",
       children: (
         <Text>
-          Are you sure you want to delete this privilege.This action is
-          destructive and will delete all data privilege
+          Are you sure you want to delete this role.This action is destructive
+          and will delete all data related to role
         </Text>
       ),
       labels: { confirm: "Delete Organization", cancel: "No don't delete it" },
@@ -60,12 +58,12 @@ const PrivilegesPage: FC<PrivilegesPageProps> = ({ launchWorkspace }) => {
 
   const tableData = useMemo<TableData>(
     () => ({
-      head: ["#", "Name", "Description", "Resource", "CreatedAt", "Actions"],
-      body: privilegesAsync?.privileges.map((docType, i) => [
+      head: ["#", "Name", "Description", "CreatedAt", "Actions"],
+      body: rolesAsync?.roles.map((docType, i) => [
         i + 1,
         docType.name,
         docType.description,
-        docType.resource?.name ?? "--",
+        // docType.privileges?.name ?? "--",
         new Date(docType.createdAt).toDateString(),
         <Menu shadow="md" width={200}>
           <Menu.Target>
@@ -96,12 +94,12 @@ const PrivilegesPage: FC<PrivilegesPageProps> = ({ launchWorkspace }) => {
         </Menu>,
       ]),
     }),
-    [privilegesAsync.privileges]
+    [rolesAsync.roles]
   );
 
   return (
     <When
-      asyncState={{ ...privilegesAsync, data: privilegesAsync.privileges }}
+      asyncState={{ ...rolesAsync, data: rolesAsync.roles }}
       loading={() => <TableSkeleton />}
       error={(e) => <ErrorState error={e} headerTitle={title} />}
       success={(data) => {
@@ -141,4 +139,4 @@ const PrivilegesPage: FC<PrivilegesPageProps> = ({ launchWorkspace }) => {
   );
 };
 
-export default PrivilegesPage;
+export default RolesPage;
