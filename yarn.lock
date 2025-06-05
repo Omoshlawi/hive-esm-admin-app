@@ -960,7 +960,7 @@
 
 "@hive/esm-core-api@../hive-esm-core/packages/esm-core-api/hive-esm-core-api-v1.0.0.tgz":
   version "1.0.0"
-  resolved "../hive-esm-core/packages/esm-core-api/hive-esm-core-api-v1.0.0.tgz#ffbf7bfe4285cb8e55bd809c6d4e4e43ba964ddd"
+  resolved "../hive-esm-core/packages/esm-core-api/hive-esm-core-api-v1.0.0.tgz#7952b0a336efa62bcf13cbd0f6443ed6e990e7f8"
   dependencies:
     axios "^1.9.0"
     clsx "^2.1.1"
@@ -969,11 +969,11 @@
 
 "@hive/esm-core-components@../hive-esm-core/packages/esm-core-components/hive-esm-core-components-v1.0.0.tgz":
   version "1.0.0"
-  resolved "../hive-esm-core/packages/esm-core-components/hive-esm-core-components-v1.0.0.tgz#e3ad4a531ded3efe1110e99a749ea17a9803b2f2"
+  resolved "../hive-esm-core/packages/esm-core-components/hive-esm-core-components-v1.0.0.tgz#c2f4c92e7e6d49aaec1886639c3f475bd60c68e9"
 
 "@hive/esm-shell-app@../hive-esm-core/packages/esm-shell-app/dist/emulator/hive-esm-shell-app-1.0.0.tgz":
   version "1.0.0"
-  resolved "../hive-esm-core/packages/esm-shell-app/dist/emulator/hive-esm-shell-app-1.0.0.tgz#47ee035eb7c29e306338f463183865da73c4c577"
+  resolved "../hive-esm-core/packages/esm-shell-app/dist/emulator/hive-esm-shell-app-1.0.0.tgz#c88504c635084db934a683166687057a3f54e15d"
 
 "@hookform/resolvers@^5.0.1":
   version "5.0.1"
@@ -1669,13 +1669,14 @@ follow-redirects@^1.15.6:
   integrity sha512-gew4GsXizNgdoRyqmyfMHyAmXsZDk6mHkSxZFCzW9gwlbtOW44CDtYavM+y+72qD/Vq2l550kMF52DT8fOLJqQ==
 
 form-data@^4.0.0:
-  version "4.0.2"
-  resolved "https://registry.yarnpkg.com/form-data/-/form-data-4.0.2.tgz#35cabbdd30c3ce73deb2c42d3c8d3ed9ca51794c"
-  integrity sha512-hGfm/slu0ZabnNt4oaRZ6uREyfCj6P4fT/n6A1rGV+Z0VdGXjfOhVUpkn6qVQONHGIFwmveGXyDs75+nr6FM8w==
+  version "4.0.3"
+  resolved "https://registry.yarnpkg.com/form-data/-/form-data-4.0.3.tgz#608b1b3f3e28be0fccf5901fc85fb3641e5cf0ae"
+  integrity sha512-qsITQPfmvMOSAdeyZ+12I1c+CKSstAFAwu+97zrnWAbIr5u8wfsExUzCesVLC8NgHuRUqNN4Zy6UPWUTRGslcA==
   dependencies:
     asynckit "^0.4.0"
     combined-stream "^1.0.8"
     es-set-tostringtag "^2.1.0"
+    hasown "^2.0.2"
     mime-types "^2.1.12"
 
 fs-readdir-recursive@^1.1.0:

@@ -19,16 +19,14 @@ import React, { FC, useMemo } from "react";
 import OrgaznizationForm from "../forms/OrgaznizationForm";
 import { useMyOrganizations } from "../hooks";
 import { Organization } from "../types";
+import { useSession } from "@hive/esm-core-api";
 
-type MyOrganizationsPageProps = Pick<
-  PiletApi,
-  "session" | "launchWorkspace"
-> & {};
+type MyOrganizationsPageProps = Pick<PiletApi, "launchWorkspace"> & {};
 
 const MyOrganizationsPage: FC<MyOrganizationsPageProps> = ({
-  session,
   launchWorkspace,
 }) => {
+  const session = useSession();
   const state = useMyOrganizations(session.user?.id);
   const title = "My Organizations";
   const handleUpdate = (organization: Organization) => {

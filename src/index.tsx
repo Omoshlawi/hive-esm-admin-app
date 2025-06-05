@@ -15,22 +15,15 @@ export function setup(app: PiletApi) {
     getSession,
     exitOrganizationContext,
     switchOrganizationContext,
-    session,
     launchWorkspace,
   } = app;
   app.registerPage("/", Page, { layout: "dashboard" });
   app.registerPage(
     "/dashboard/my-organizations",
     withUserAccess(
-      () => (
-        <MyOrganizationsPage
-          session={session}
-          launchWorkspace={launchWorkspace}
-        />
-      ),
+      () => <MyOrganizationsPage launchWorkspace={launchWorkspace} />,
 
       {
-        getSession,
         isAuthenticated: (session) => session.isAuthenticated,
         requiresAuth: true,
       }
@@ -48,9 +41,8 @@ export function setup(app: PiletApi) {
     () => (
       <UserHasAccess
         component={React.lazy(() => import("./components/ContextSwicher"))}
-        session={session}
         componentProps={{
-          session,
+          session: getSession(),
           exitOrganizationContext,
           switchOrganizationContext,
         }}
@@ -59,7 +51,7 @@ export function setup(app: PiletApi) {
     )
   );
   app.registerMenu(
-    ({ onClose }) => (
+    ({ onClose }: any) => (
       <HeaderLink
         to="/dashboard/my-organizations"
         label="My Organizations"

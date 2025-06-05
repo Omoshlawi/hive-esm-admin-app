@@ -1,4 +1,4 @@
-import { Button, Loader, Menu } from "@mantine/core";
+import { Button, Loader, Menu, useMantineTheme } from "@mantine/core";
 import {
   IconArrowsLeftRight,
   IconArrowsUpDown,
@@ -7,28 +7,37 @@ import {
 import React, { useMemo } from "react";
 import { useMyOrganizations } from "../hooks";
 import { PiletApi } from "@hive/esm-shell-app";
-import { When } from "@hive/esm-core-components";
+import { TablerIcon, When } from "@hive/esm-core-components";
+import { Organization } from "../types";
+import { useSession } from "@hive/esm-core-api";
 type ContextSwicherProps = Pick<
   PiletApi,
-  | "session"
-  | "launchWorkspace"
-  | "exitOrganizationContext"
-  | "switchOrganizationContext"
+  "exitOrganizationContext" | "switchOrganizationContext"
 > & {};
 
 const ContextSwicher: React.FC<ContextSwicherProps> = ({
-  session,
   exitOrganizationContext,
-  launchWorkspace,
   switchOrganizationContext,
 }) => {
+  const session = useSession();
   const state = useMyOrganizations(session.user?.id);
+  const { primaryColor } = useMantineTheme();
   const currentOrg = useMemo(() => {
     return state.organizationsMemberships.find(
       ({ organizationId }) => organizationId === session.currentOrganization
     )?.organization.name;
-  }, [session.currentOrganization, state.organizationsMemberships]);
+  }, [session, state]);
+  const handleSwitchContext = (org: Organization) => {
+    if (org.name !== currentOrg) {
+      switchOrganizationContext(org.id);
+    }
+  };
 
+  const handleExitContext = () => {
+    if (currentOrg) {
+      exitOrganizationContext();
+    }
+  };
   return (
     <Menu
       shadow="md"
@@ -44,7 +53,7 @@ const ContextSwicher: React.FC<ContextSwicherProps> = ({
           rightSection={<IconArrowsUpDown size={16} />}
           justify="space-between"
         >
-          {currentOrg ?? "Switch Context"}
+          {currentOrg ?? "Individual"}
         </Button>
       </Menu.Target>
       <Menu.Dropdown flex={1}>
@@ -61,26 +70,36 @@ const ContextSwicher: React.FC<ContextSwicherProps> = ({
             return (
               <>
                 <Menu.Item
-                  leftSection={<IconArrowsLeftRight size={14} />}
-                  bg={currentOrg ? undefined : "teal"}
-                  onClick={currentOrg ? undefined : exitOrganizationContext}
+                  leftSection={
+                    <TablerIcon
+                      name={currentOrg ? "arrowsLeftRight" : "check"}
+                      size={14}
+                    />
+                  }
+                  bg={currentOrg ? undefined : primaryColor}
+                  onClick={handleExitContext}
                 >
                   Individual
                 </Menu.Item>
                 {data.map((org) => (
                   <Menu.Item
                     key={org.id}
-                    leftSection={<IconArrowsLeftRight size={14} />}
+                    leftSection={
+                      <TablerIcon
+                        name={
+                          currentOrg === org.organization.name
+                            ? "check"
+                            : "arrowsLeftRight"
+                        }
+                        size={14}
+                      />
+                    }
                     bg={
                       currentOrg === org?.organization?.name
-                        ? "teal"
+                        ? primaryColor
                         : undefined
                     }
-                    onClick={
-                      currentOrg
-                        ? () => switchOrganizationContext(org.organizationId)
-                        : undefined
-                    }
+                    onClick={() => handleSwitchContext(org.organization)}
                   >
                     {org.organization.name}
                   </Menu.Item>

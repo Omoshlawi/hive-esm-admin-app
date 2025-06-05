@@ -33,7 +33,7 @@
   },
   "peerDependencies": {},
   "scripts": {
-    "clean": "rm -rf node_modules && rm -f yarn.lock && yarn install",
+    "clean": "rm -rf node_modules && rm -f yarn.lock && yarn cache clean && yarn install",
     "start": "pilet debug",
     "build": "pilet build",
     "upgrade": "pilet upgrade",
