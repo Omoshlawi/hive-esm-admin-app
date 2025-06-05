@@ -8,6 +8,17 @@
   "dependencies": {},
   "devDependencies": {
     "@hive/esm-shell-app": "../hive-esm-core/packages/esm-shell-app/dist/emulator/hive-esm-shell-app-1.0.0.tgz",
+    "@mantine/core": "^8.0.1",
+    "@mantine/hooks": "^8.0.1",
+    "@mantine/modals": "^8.0.2",
+    "@mantine/notifications": "8.0.2",
+    "@tabler/icons-react": "^3.33.0",
+    "@hive/esm-core-components": "../hive-esm-core/packages/esm-core-components/hive-esm-core-components-v1.0.0.tgz",
+    "@hive/esm-core-api": "../hive-esm-core/packages/esm-core-api/hive-esm-core-api-v1.0.0.tgz",
+    "@hookform/resolvers": "^5.0.1",
+    "react-hook-form": "^7.57.0",
+    "zod": "^3.25.50",
+    "swr": "^2.3.3",
     "@types/react": "*",
     "@types/react-dom": "*",
     "@types/node": "latest",
@@ -20,32 +31,9 @@
     "piral-cli": "1.8.5",
     "piral-cli-esbuild": "latest"
   },
-  "peerDependencies": {
-    "@mantine/core": "^8.0.1",
-    "@mantine/hooks": "^8.0.1",
-    "@mantine/modals": "^8.0.2",
-    "@mantine/notifications": "8.0.2",
-    "@tabler/icons-react": "^3.33.0",
-    "@hive/esm-core-components": "../hive-esm-core/packages/esm-core-components/hive-esm-core-components-v1.0.0.tgz",
-    "@hive/esm-core-api": "../hive-esm-core/packages/esm-core-api/hive-esm-core-api-v1.0.0.tgz",
-    "@hookform/resolvers": "^5.0.1",
-    "react-hook-form": "^7.57.0",
-    "zod": "^3.25.50",
-    "swr": "^2.3.3"
-  },
-  "externals": [
-    "@mantine/core",
-    "@mantine/hooks",
-    "@tabler/icons-react",
-    "@mantine/modals",
-    "@hive/esm-core-components",
-    "@hive/esm-core-api",
-    "@hookform/resolvers",
-    "react-hook-form",
-    "zod",
-    "swr"
-  ],
+  "peerDependencies": {},
   "scripts": {
+    "clean": "rm -rf node_modules && rm -f yarn.lock && yarn install",
     "start": "pilet debug",
     "build": "pilet build",
     "upgrade": "pilet upgrade",
@@ -60,7 +48,9 @@
     "inherit": [
       "@hive/esm-shell-app"
     ],
-    "imports": {}
+    "imports": {
+      "@hookform/resolvers/zod": "@hookform/resolvers/zod"
+    }
   },
   "source": "src/index.tsx"
 }
