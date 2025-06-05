@@ -1,12 +1,9 @@
-import {
-  EmptyState,
-  ErrorState,
-  TableContainer,
-  TablerIcon,
-  TableSkeleton,
-  When,
-} from "@hive/esm-core-components";
-import { PiletApi } from "@hive/esm-shell-app";
+import React, { FC, useMemo } from "react";
+import { usePrivileges } from "../hooks";
+import type { PiletApi } from "@hive/esm-shell-app";
+import PriviledgeForm from "../forms/PriviledgeForm";
+import { Privilege } from "../types";
+import { openConfirmModal } from "@mantine/modals";
 import {
   ActionIcon,
   Button,
@@ -16,37 +13,36 @@ import {
   TableData,
   Text,
 } from "@mantine/core";
-import { openConfirmModal } from "@mantine/modals";
-import React, { FC, useMemo } from "react";
-import OrgaznizationForm from "../forms/OrgaznizationForm";
-import { useMyOrganizations } from "../hooks";
-import { Organization } from "../types";
-import { useSession } from "@hive/esm-core-api";
+import {
+  EmptyState,
+  ErrorState,
+  TableContainer,
+  TablerIcon,
+  TableSkeleton,
+  When,
+} from "@hive/esm-core-components";
 import { IconPlus } from "@tabler/icons-react";
+type PrivilegesPageProps = Pick<PiletApi, "launchWorkspace"> & {};
 
-type MyOrganizationsPageProps = Pick<PiletApi, "launchWorkspace"> & {};
-
-const MyOrganizationsPage: FC<MyOrganizationsPageProps> = ({
-  launchWorkspace,
-}) => {
-  const session = useSession();
-  const state = useMyOrganizations(session.user?.id);
-  const title = "My Organizations";
-
-  const handleAddUpdate = (organization?: Organization) => {
+const PrivilegesPage: FC<PrivilegesPageProps> = ({ launchWorkspace }) => {
+  const privilegesAsync = usePrivileges();
+  const title = "Privileges";
+  const handleAddOrupdate = (privilege?: Privilege) => {
     const dispose = launchWorkspace(
-      <OrgaznizationForm
-        organization={organization}
-        // onSuccess={() => dispose()}
+      <PriviledgeForm
+        privilege={privilege}
+        onSuccess={() => dispose()}
         onCloseWorkspace={() => dispose()}
       />,
-      { title: organization ? "Update amenity" : "Register new Oraganization" }
+      {
+        title: privilege ? "Update Privilege" : "Add Privilege",
+      }
     );
   };
 
-  const handleDelete = (organization: Organization) => {
+  const handleDelete = (privilege: Privilege) => {
     openConfirmModal({
-      title: "Delete Organization",
+      title: "Delete Privilege",
       children: (
         <Text>
           Are you sure you want to delete this organization.This action is
@@ -61,13 +57,15 @@ const MyOrganizationsPage: FC<MyOrganizationsPageProps> = ({
       },
     });
   };
+
   const tableData = useMemo<TableData>(
     () => ({
-      head: ["#", "Name", "Description", "CreatedAt", "Actions"],
-      body: state?.organizationsMemberships.map((docType, i) => [
+      head: ["#", "Name", "Description", "Resource", "CreatedAt", "Actions"],
+      body: privilegesAsync?.privileges.map((docType, i) => [
         i + 1,
-        docType.organization.name,
-        docType.organization.description,
+        docType.name,
+        docType.description,
+        docType.resource?.name ?? "--",
         new Date(docType.createdAt).toDateString(),
         <Menu shadow="md" width={200}>
           <Menu.Target>
@@ -83,14 +81,14 @@ const MyOrganizationsPage: FC<MyOrganizationsPageProps> = ({
             <Menu.Item
               leftSection={<TablerIcon name="edit" size={14} />}
               color="green"
-              onClick={() => handleAddUpdate(docType.organization)}
+              onClick={() => handleAddOrupdate(docType)}
             >
               Edit
             </Menu.Item>
             <Menu.Item
               leftSection={<TablerIcon name="trash" size={14} />}
               color="red"
-              onClick={() => handleDelete(docType.organization)}
+              onClick={() => handleDelete(docType)}
             >
               Delete
             </Menu.Item>
@@ -98,17 +96,18 @@ const MyOrganizationsPage: FC<MyOrganizationsPageProps> = ({
         </Menu>,
       ]),
     }),
-    [state.organizationsMemberships]
+    [privilegesAsync.privileges]
   );
+
   return (
     <When
-      asyncState={{ ...state, data: state.organizationsMemberships }}
+      asyncState={{ ...privilegesAsync, data: privilegesAsync.privileges }}
       loading={() => <TableSkeleton />}
       error={(e) => <ErrorState error={e} headerTitle={title} />}
       success={(data) => {
         if (!data.length)
           return (
-            <EmptyState headerTitle={title} onAdd={() => handleAddUpdate()} />
+            <EmptyState headerTitle={title} onAdd={() => handleAddOrupdate()} />
           );
         return (
           <TableContainer
@@ -117,7 +116,7 @@ const MyOrganizationsPage: FC<MyOrganizationsPageProps> = ({
               <Button
                 variant="subtle"
                 leftSection={<IconPlus />}
-                onClick={() => handleAddUpdate()}
+                onClick={() => handleAddOrupdate()}
               >
                 Add
               </Button>
@@ -142,4 +141,4 @@ const MyOrganizationsPage: FC<MyOrganizationsPageProps> = ({
   );
 };
 
-export default MyOrganizationsPage;
+export default PrivilegesPage;

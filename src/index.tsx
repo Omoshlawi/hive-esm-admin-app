@@ -7,12 +7,12 @@ import type { PiletApi } from "@hive/esm-shell-app";
 import * as React from "react";
 import MyOrganizationsPage from "./pages/MyOrganizationsPage";
 import { EXTENSION_SLOTS } from "./utils/constants";
+import PrivilegesPage from "./pages/PrivilegesPage";
 
 const Page = React.lazy(() => import("./Page"));
 
 export function setup(app: PiletApi) {
   const {
-    getSession,
     exitOrganizationContext,
     switchOrganizationContext,
     launchWorkspace,
@@ -22,12 +22,23 @@ export function setup(app: PiletApi) {
     "/dashboard/my-organizations",
     withUserAccess(
       () => <MyOrganizationsPage launchWorkspace={launchWorkspace} />,
-
       {
         isAuthenticated: (session) => session.isAuthenticated,
         requiresAuth: true,
+        fallbackComponent: true,
       }
     ),
+    {
+      layout: "dashboard",
+    }
+  );
+  app.registerPage(
+    "/dashboard/privileges",
+    withUserAccess(() => <PrivilegesPage launchWorkspace={launchWorkspace} />, {
+      isAuthenticated: (session) => session.isAuthenticated,
+      requiresAuth: true,
+      fallbackComponent: null,
+    }),
     {
       layout: "dashboard",
     }
@@ -42,7 +53,6 @@ export function setup(app: PiletApi) {
       <UserHasAccess
         component={React.lazy(() => import("./components/ContextSwicher"))}
         componentProps={{
-          session: getSession(),
           exitOrganizationContext,
           switchOrganizationContext,
         }}
@@ -55,6 +65,18 @@ export function setup(app: PiletApi) {
       <HeaderLink
         to="/dashboard/my-organizations"
         label="My Organizations"
+        onClose={onClose ?? (() => {})}
+      />
+    ),
+    {
+      type: "admin",
+    }
+  );
+  app.registerMenu(
+    ({ onClose }: any) => (
+      <HeaderLink
+        to="/dashboard/privileges"
+        label="Prividges"
         onClose={onClose ?? (() => {})}
       />
     ),
