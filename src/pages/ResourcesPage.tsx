@@ -3,6 +3,7 @@ import { useResources } from "../hooks";
 import {
   ActionIcon,
   Button,
+  Group,
   Menu,
   Paper,
   Stack,
@@ -11,6 +12,7 @@ import {
   Title,
 } from "@mantine/core";
 import {
+  DataTable,
   EmptyState,
   ErrorState,
   TablerIcon,
@@ -18,6 +20,8 @@ import {
   When,
 } from "@hive/esm-core-components";
 import { IconPlus } from "@tabler/icons-react";
+import { ColumnDef } from "@tanstack/react-table";
+import { Resource } from "../types";
 
 const ResourcesPage = () => {
   const resoucesAsync = useResources();
@@ -62,6 +66,7 @@ const ResourcesPage = () => {
     }),
     [resoucesAsync.resources]
   );
+
   return (
     <When
       asyncState={{ ...resoucesAsync, data: resoucesAsync.resources }}
@@ -71,21 +76,12 @@ const ResourcesPage = () => {
         if (!data.length)
           return <EmptyState title={title} message="No resources" />;
         return (
-          <Paper component={Stack}>
-            <Title>Resources</Title>
-            <Table
-              striped
-              data={tableData}
-              highlightOnHover
-              styles={{
-                td: {
-                  whiteSpace: "nowrap",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                },
-              }}
-            />
-          </Paper>
+          <DataTable
+            columns={columns}
+            data={data}
+            title="Resources"
+            withColumnViewOptions
+          />
         );
       }}
     />
@@ -93,3 +89,24 @@ const ResourcesPage = () => {
 };
 
 export default ResourcesPage;
+const columns: ColumnDef<Resource>[] = [
+  { accessorKey: "name", header: "Resource" },
+  { accessorKey: "description", header: "Description" },
+  {
+    accessorKey: "dataPoints",
+    header: "Data Points",
+    cell({ getValue }) {
+      const dataPoints = getValue<string[]>();
+      return dataPoints.join(", ");
+    },
+  },
+
+  {
+    accessorKey: "createdAt",
+    header: "Date Created",
+    cell({ getValue }) {
+      const created = getValue<string>();
+      return new Date(created).toDateString();
+    },
+  },
+];

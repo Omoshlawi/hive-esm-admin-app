@@ -7,6 +7,7 @@ import { openConfirmModal } from "@mantine/modals";
 import {
   ActionIcon,
   Button,
+  Group,
   Loader,
   Menu,
   Paper,
@@ -15,6 +16,7 @@ import {
   Text,
 } from "@mantine/core";
 import {
+  DataTable,
   EmptyState,
   ErrorState,
   TablerIcon,
@@ -22,6 +24,7 @@ import {
   When,
 } from "@hive/esm-core-components";
 import { IconPlus } from "@tabler/icons-react";
+import { ColumnDef } from "@tanstack/react-table";
 type PrivilegesPageProps = Pick<PiletApi, "launchWorkspace"> & {};
 
 const PrivilegesPage: FC<PrivilegesPageProps> = ({ launchWorkspace }) => {
@@ -58,47 +61,43 @@ const PrivilegesPage: FC<PrivilegesPageProps> = ({ launchWorkspace }) => {
     });
   };
 
-  const tableData = useMemo<TableData>(
-    () => ({
-      head: ["#", "Name", "Description", "Resource", "CreatedAt", "Actions"],
-      body: privilegesAsync?.privileges?.map((docType, i) => [
-        i + 1,
-        docType.name,
-        docType.description,
-        docType.resource?.name ?? "--",
-        new Date(docType.createdAt).toDateString(),
-        <Menu shadow="md" width={200}>
-          <Menu.Target>
-            <ActionIcon variant="outline" aria-label="Settings">
+  const actions: ColumnDef<Privilege> = {
+    id: "actions",
+    header: "Actions",
+    cell({ row }) {
+      const privilege = row.original;
+      return (
+        <Group>
+          <Group>
+            <ActionIcon
+              variant="outline"
+              aria-label="Settings"
+              color="green"
+              onClick={() => handleAddOrupdate(privilege)}
+            >
               <TablerIcon
-                name="dotsVertical"
+                name="edit"
                 style={{ width: "70%", height: "70%" }}
                 stroke={1.5}
               />
             </ActionIcon>
-          </Menu.Target>
-          <Menu.Dropdown>
-            <Menu.Item
-              leftSection={<TablerIcon name="edit" size={14} />}
-              color="green"
-              onClick={() => handleAddOrupdate(docType)}
-            >
-              Edit
-            </Menu.Item>
-            <Menu.Item
-              leftSection={<TablerIcon name="trash" size={14} />}
+            <ActionIcon
+              variant="outline"
+              aria-label="Settings"
               color="red"
-              onClick={() => handleDelete(docType)}
+              onClick={() => handleDelete(privilege)}
             >
-              Delete
-            </Menu.Item>
-          </Menu.Dropdown>
-        </Menu>,
-      ]),
-    }),
-    [privilegesAsync.privileges]
-  );
-
+              <TablerIcon
+                name="trash"
+                style={{ width: "70%", height: "70%" }}
+                stroke={1.5}
+              />
+            </ActionIcon>
+          </Group>
+        </Group>
+      );
+    },
+  };
   return (
     <When
       asyncState={{ ...privilegesAsync, data: privilegesAsync.privileges }}
@@ -106,35 +105,25 @@ const PrivilegesPage: FC<PrivilegesPageProps> = ({ launchWorkspace }) => {
       error={(e) => <ErrorState error={e} title={title} />}
       success={(data) => {
         if (!data.length)
-          return (
-            <EmptyState title={title} onAdd={() => handleAddOrupdate()} />
-          );
+          return <EmptyState title={title} onAdd={() => handleAddOrupdate()} />;
         return (
-          <Paper
-            title={title}
-            actions={
-              <Button
-                variant="subtle"
-                leftSection={<IconPlus />}
-                onClick={() => handleAddOrupdate()}
-              >
-                Add
-              </Button>
-            }
-          >
-            <Table
-              striped
-              data={tableData}
-              highlightOnHover
-              styles={{
-                td: {
-                  whiteSpace: "nowrap",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                },
-              }}
-            />
-          </Paper>
+          <DataTable
+            columns={[...columns, actions]}
+            data={data}
+            renderActions={() => (
+              <>
+                <Button
+                  variant="light"
+                  leftSection={<IconPlus />}
+                  onClick={() => handleAddOrupdate()}
+                >
+                  Add
+                </Button>
+              </>
+            )}
+            title="Privileges"
+            withColumnViewOptions
+          />
         );
       }}
     />
@@ -142,3 +131,32 @@ const PrivilegesPage: FC<PrivilegesPageProps> = ({ launchWorkspace }) => {
 };
 
 export default PrivilegesPage;
+const columns: ColumnDef<Privilege>[] = [
+  { accessorKey: "name", header: "Privilege" },
+  { accessorKey: "description", header: "Description" },
+  { accessorKey: "resource.name", header: "Resource" },
+  {
+    accessorKey: "permitedResourceDataPoints",
+    header: "Data points",
+    cell({ getValue }) {
+      const points = getValue<Array<string>>();
+      return points.join(", ");
+    },
+  },
+  {
+    accessorKey: "operations",
+    header: "Operations",
+    cell({ getValue }) {
+      const operation = getValue<Array<string>>();
+      return operation.join(", ");
+    },
+  },
+  {
+    accessorKey: "createdAt",
+    header: "Date Created",
+    cell({ getValue }) {
+      const created = getValue<string>();
+      return new Date(created).toDateString();
+    },
+  },
+];

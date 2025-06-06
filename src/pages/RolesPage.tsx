@@ -1,26 +1,20 @@
 import {
+  DataTable,
   EmptyState,
   ErrorState,
-  TableContainer,
   TablerIcon,
   TableSkeleton,
   When,
 } from "@hive/esm-core-components";
 import { PiletApi } from "@hive/esm-shell-app";
-import {
-  ActionIcon,
-  Button,
-  Menu,
-  Table,
-  TableData,
-  Text,
-} from "@mantine/core";
+import { ActionIcon, Button, Group, Text } from "@mantine/core";
 import { openConfirmModal } from "@mantine/modals";
 import { IconPlus } from "@tabler/icons-react";
-import React, { FC, useMemo } from "react";
+import { ColumnDef } from "@tanstack/react-table";
+import React, { FC } from "react";
 import RoleForm from "../forms/RoleForm";
 import { useRoles } from "../hooks";
-import { Role } from "../types";
+import { Privilege, Role, RolePrivilege } from "../types";
 type RolesPageProps = Pick<PiletApi, "launchWorkspace"> & {};
 
 const RolesPage: FC<RolesPageProps> = ({ launchWorkspace }) => {
@@ -56,46 +50,43 @@ const RolesPage: FC<RolesPageProps> = ({ launchWorkspace }) => {
     });
   };
 
-  const tableData = useMemo<TableData>(
-    () => ({
-      head: ["#", "Name", "Description", "CreatedAt", "Actions"],
-      body: rolesAsync?.roles?.map((docType, i) => [
-        i + 1,
-        docType.name,
-        docType.description,
-        // docType.privileges?.name ?? "--",
-        new Date(docType.createdAt).toDateString(),
-        <Menu shadow="md" width={200}>
-          <Menu.Target>
-            <ActionIcon variant="outline" aria-label="Settings">
+  const actions: ColumnDef<Role> = {
+    id: "actions",
+    header: "Actions",
+    cell({ row }) {
+      const role = row.original;
+      return (
+        <Group>
+          <Group>
+            <ActionIcon
+              variant="outline"
+              aria-label="Settings"
+              color="green"
+              onClick={() => handleAddOrupdate(role)}
+            >
               <TablerIcon
-                name="dotsVertical"
+                name="edit"
                 style={{ width: "70%", height: "70%" }}
                 stroke={1.5}
               />
             </ActionIcon>
-          </Menu.Target>
-          <Menu.Dropdown>
-            <Menu.Item
-              leftSection={<TablerIcon name="edit" size={14} />}
-              color="green"
-              onClick={() => handleAddOrupdate(docType)}
-            >
-              Edit
-            </Menu.Item>
-            <Menu.Item
-              leftSection={<TablerIcon name="trash" size={14} />}
+            <ActionIcon
+              variant="outline"
+              aria-label="Settings"
               color="red"
-              onClick={() => handleDelete(docType)}
+              onClick={() => handleDelete(role)}
             >
-              Delete
-            </Menu.Item>
-          </Menu.Dropdown>
-        </Menu>,
-      ]),
-    }),
-    [rolesAsync.roles]
-  );
+              <TablerIcon
+                name="trash"
+                style={{ width: "70%", height: "70%" }}
+                stroke={1.5}
+              />
+            </ActionIcon>
+          </Group>
+        </Group>
+      );
+    },
+  };
 
   return (
     <When
@@ -104,35 +95,25 @@ const RolesPage: FC<RolesPageProps> = ({ launchWorkspace }) => {
       error={(e) => <ErrorState error={e} title={title} />}
       success={(data) => {
         if (!data.length)
-          return (
-            <EmptyState title={title} onAdd={() => handleAddOrupdate()} />
-          );
+          return <EmptyState title={title} onAdd={() => handleAddOrupdate()} />;
         return (
-          <TableContainer
-            title={title}
-            actions={
-              <Button
-                variant="subtle"
-                leftSection={<IconPlus />}
-                onClick={() => handleAddOrupdate()}
-              >
-                Add
-              </Button>
-            }
-          >
-            <Table
-              striped
-              data={tableData}
-              highlightOnHover
-              styles={{
-                td: {
-                  whiteSpace: "nowrap",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                },
-              }}
-            />
-          </TableContainer>
+          <DataTable
+            data={data}
+            columns={[...columns, actions]}
+            renderActions={() => (
+              <>
+                <Button
+                  variant="light"
+                  leftSection={<IconPlus />}
+                  onClick={() => handleAddOrupdate()}
+                >
+                  Add
+                </Button>
+              </>
+            )}
+            title="Roles"
+            withColumnViewOptions
+          />
         );
       }}
     />
@@ -140,3 +121,26 @@ const RolesPage: FC<RolesPageProps> = ({ launchWorkspace }) => {
 };
 
 export default RolesPage;
+const columns: ColumnDef<Role>[] = [
+  {
+    accessorKey: "name",
+    header: "Role",
+  },
+  {
+    accessorKey: "privileges",
+    header: "Privileges",
+    cell({ getValue }) {
+      const privileges = getValue<RolePrivilege[]>();
+      return privileges?.map((p) => p.privilege.name).join(", ");
+    },
+  },
+  { accessorKey: "description", header: "Description" },
+  {
+    accessorKey: "createdAt",
+    header: "Date Created",
+    cell({ getValue }) {
+      const created = getValue<string>();
+      return new Date(created).toDateString();
+    },
+  },
+];
