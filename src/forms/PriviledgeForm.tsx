@@ -49,6 +49,8 @@ const PriviledgeForm: FC<PriviledgeFormProps> = ({
         : await addPrivilege(data);
 
       onSuccess?.(res.data);
+      onCloseWorkspace?.();
+
       mutate("/privileges");
       showNotification({
         title: "succes",

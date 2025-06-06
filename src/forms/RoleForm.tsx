@@ -38,6 +38,8 @@ const RoleForm: FC<RoleFormProps> = ({ onCloseWorkspace, onSuccess, role }) => {
     try {
       const res = role ? await updateRole(role?.id, data) : await addRole(data);
       onSuccess?.(res.data);
+      onCloseWorkspace?.();
+
       mutate("/roles");
       showNotification({
         title: "succes",

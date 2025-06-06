@@ -38,8 +38,8 @@ const AppServicesPage = () => {
             title="Application services"
             renderActions={() => (
               <>
-                <Button leftSection={<IconPlus size={16} />}>
-                  Add app service
+                <Button leftSection={<IconPlus size={16} />} variant="light">
+                  Add
                 </Button>
               </>
             )}
@@ -132,42 +132,6 @@ const columns: ColumnDef<AppService>[] = [
     cell({ row, getValue }) {
       const timestamp = getValue<number>();
       return <Chip>{new Date(timestamp).toDateString()}</Chip>;
-    },
-  },
-  {
-    id: "actions",
-    header: "Actions",
-    cell({ row }) {
-      const service = row.original;
-      return (
-        <Menu shadow="md" width={200}>
-          <Menu.Target>
-            <ActionIcon variant="outline" aria-label="Settings">
-              <TablerIcon
-                name="dotsVertical"
-                style={{ width: "70%", height: "70%" }}
-                stroke={1.5}
-              />
-            </ActionIcon>
-          </Menu.Target>
-          <Menu.Dropdown>
-            <Menu.Item
-              leftSection={<TablerIcon name="edit" size={14} />}
-              color="green"
-              //   onClick={() => handleAddOrupdate(docType)}
-            >
-              Edit
-            </Menu.Item>
-            <Menu.Item
-              leftSection={<TablerIcon name="trash" size={14} />}
-              color="red"
-              //   onClick={() => handleDelete(docType)}
-            >
-              Delete
-            </Menu.Item>
-          </Menu.Dropdown>
-        </Menu>
-      );
     },
   },
 ];

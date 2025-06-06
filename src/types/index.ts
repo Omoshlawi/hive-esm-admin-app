@@ -26,6 +26,7 @@ export type ResourceFormData = z.infer<typeof ResourceSchema>;
 export type OrganizationMembershipFormData = z.infer<
   typeof OrganizationMembershipSchema
 >;
+export type UserFormData = {};
 
 export interface Resource {
   id: string;

@@ -11,6 +11,7 @@ import PrivilegesPage from "./pages/PrivilegesPage";
 import RolesPage from "./pages/RolesPage";
 import ResourcesPage from "./pages/ResourcesPage";
 import AppServicesPage from "./pages/AppServicesPage";
+import OrganizationStaffPage from "./pages/OrganizationStaffPage";
 
 export function setup(app: PiletApi) {
   const {
@@ -25,7 +26,19 @@ export function setup(app: PiletApi) {
       {
         isAuthenticated: (session) => session.isAuthenticated,
         requiresAuth: true,
-        fallbackComponent: true,
+      }
+    ),
+    {
+      layout: "dashboard",
+    }
+  );
+  app.registerPage(
+    "/dashboard/staff",
+    withUserAccess(
+      () => <OrganizationStaffPage launchWorkspace={launchWorkspace} />,
+      {
+        isAuthenticated: (session) => session.isAuthenticated,
+        requiresAuth: true,
       }
     ),
     {
@@ -37,7 +50,6 @@ export function setup(app: PiletApi) {
     withUserAccess(() => <PrivilegesPage launchWorkspace={launchWorkspace} />, {
       isAuthenticated: (session) => session.isAuthenticated,
       requiresAuth: true,
-      fallbackComponent: null,
     }),
     {
       layout: "dashboard",
@@ -48,7 +60,6 @@ export function setup(app: PiletApi) {
     withUserAccess(() => <RolesPage launchWorkspace={launchWorkspace} />, {
       isAuthenticated: (session) => session.isAuthenticated,
       requiresAuth: true,
-      fallbackComponent: null,
     }),
     {
       layout: "dashboard",
@@ -59,7 +70,6 @@ export function setup(app: PiletApi) {
     withUserAccess(ResourcesPage, {
       isAuthenticated: (session) => session.isAuthenticated,
       requiresAuth: true,
-      fallbackComponent: null,
     }),
     {
       layout: "dashboard",
@@ -70,7 +80,6 @@ export function setup(app: PiletApi) {
     withUserAccess(AppServicesPage, {
       isAuthenticated: (session) => session.isAuthenticated,
       requiresAuth: true,
-      fallbackComponent: null,
     }),
     {
       layout: "dashboard",
@@ -146,6 +155,18 @@ export function setup(app: PiletApi) {
       <HeaderLink
         to="/dashboard/app-services"
         label="App services"
+        onClose={onClose ?? (() => {})}
+      />
+    ),
+    {
+      type: "admin",
+    }
+  );
+  app.registerMenu(
+    ({ onClose }: any) => (
+      <HeaderLink
+        to="/dashboard/staff"
+        label="Staffs"
         onClose={onClose ?? (() => {})}
       />
     ),

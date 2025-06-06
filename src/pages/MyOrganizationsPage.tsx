@@ -110,8 +110,9 @@ const MyOrganizationsPage: FC<MyOrganizationsPageProps> = ({
               <Button
                 onClick={() => handleAddUpdate()}
                 leftSection={<IconPlus />}
+                variant="light"
               >
-                Add Organization
+                Add
               </Button>
             )}
           />

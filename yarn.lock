@@ -960,7 +960,7 @@
 
 "@hive/esm-core-api@../hive-esm-core/packages/esm-core-api/hive-esm-core-api-v1.0.0.tgz":
   version "1.0.0"
-  resolved "../hive-esm-core/packages/esm-core-api/hive-esm-core-api-v1.0.0.tgz#7952b0a336efa62bcf13cbd0f6443ed6e990e7f8"
+  resolved "../hive-esm-core/packages/esm-core-api/hive-esm-core-api-v1.0.0.tgz#9205d41109d2f6a447bb4ee46156faae2b7cb819"
   dependencies:
     axios "^1.9.0"
     clsx "^2.1.1"
@@ -973,7 +973,7 @@
 
 "@hive/esm-shell-app@../hive-esm-core/packages/esm-shell-app/dist/emulator/hive-esm-shell-app-1.0.0.tgz":
   version "1.0.0"
-  resolved "../hive-esm-core/packages/esm-shell-app/dist/emulator/hive-esm-shell-app-1.0.0.tgz#68fe6474b613532856102bec0363e9fd495218d4"
+  resolved "../hive-esm-core/packages/esm-shell-app/dist/emulator/hive-esm-shell-app-1.0.0.tgz#0cd6dffeda5a5fca8f20ec1a8ee7a69c2ecfd83b"
 
 "@hookform/resolvers@^5.0.1":
   version "5.0.1"
@@ -2645,6 +2645,6 @@ yargs@^17:
     yargs-parser "^21.1.1"
 
 zod@^3.25.50:
-  version "3.25.55"
-  resolved "https://registry.yarnpkg.com/zod/-/zod-3.25.55.tgz#b1ffd48a34f558d1a912d1ed6bf84a6ca692fbe1"
-  integrity sha512-219huNnkSLQnLsQ3uaRjXsxMrVm5C9W3OOpEVt2k5tvMKuA8nBSu38e0B//a+he9Iq2dvmk2VyYVlHqiHa4YBA==
+  version "3.25.56"
+  resolved "https://registry.yarnpkg.com/zod/-/zod-3.25.56.tgz#4cff0340b7cd3778314dac1e74d6a663ffeef914"
+  integrity sha512-rd6eEF3BTNvQnR2e2wwolfTmUTnp70aUTqr0oaGbHifzC3BKJsoV+Gat8vxUMR1hwOKBs6El+qWehrHbCpW6SQ==
