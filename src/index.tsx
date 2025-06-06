@@ -9,6 +9,8 @@ import MyOrganizationsPage from "./pages/MyOrganizationsPage";
 import { EXTENSION_SLOTS } from "./utils/constants";
 import PrivilegesPage from "./pages/PrivilegesPage";
 import RolesPage from "./pages/RolesPage";
+import ResourcesPage from "./pages/ResourcesPage";
+import AppServicesPage from "./pages/AppServicesPage";
 
 export function setup(app: PiletApi) {
   const {
@@ -44,6 +46,28 @@ export function setup(app: PiletApi) {
   app.registerPage(
     "/dashboard/roles",
     withUserAccess(() => <RolesPage launchWorkspace={launchWorkspace} />, {
+      isAuthenticated: (session) => session.isAuthenticated,
+      requiresAuth: true,
+      fallbackComponent: null,
+    }),
+    {
+      layout: "dashboard",
+    }
+  );
+  app.registerPage(
+    "/dashboard/resources",
+    withUserAccess(ResourcesPage, {
+      isAuthenticated: (session) => session.isAuthenticated,
+      requiresAuth: true,
+      fallbackComponent: null,
+    }),
+    {
+      layout: "dashboard",
+    }
+  );
+  app.registerPage(
+    "/dashboard/app-services",
+    withUserAccess(AppServicesPage, {
       isAuthenticated: (session) => session.isAuthenticated,
       requiresAuth: true,
       fallbackComponent: null,
@@ -98,6 +122,30 @@ export function setup(app: PiletApi) {
       <HeaderLink
         to="/dashboard/roles"
         label="Roles"
+        onClose={onClose ?? (() => {})}
+      />
+    ),
+    {
+      type: "admin",
+    }
+  );
+  app.registerMenu(
+    ({ onClose }: any) => (
+      <HeaderLink
+        to="/dashboard/resources"
+        label="Resources"
+        onClose={onClose ?? (() => {})}
+      />
+    ),
+    {
+      type: "admin",
+    }
+  );
+  app.registerMenu(
+    ({ onClose }: any) => (
+      <HeaderLink
+        to="/dashboard/app-services"
+        label="App services"
         onClose={onClose ?? (() => {})}
       />
     ),

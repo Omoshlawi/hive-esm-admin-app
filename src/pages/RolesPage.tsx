@@ -59,7 +59,7 @@ const RolesPage: FC<RolesPageProps> = ({ launchWorkspace }) => {
   const tableData = useMemo<TableData>(
     () => ({
       head: ["#", "Name", "Description", "CreatedAt", "Actions"],
-      body: rolesAsync?.roles.map((docType, i) => [
+      body: rolesAsync?.roles?.map((docType, i) => [
         i + 1,
         docType.name,
         docType.description,
@@ -101,11 +101,11 @@ const RolesPage: FC<RolesPageProps> = ({ launchWorkspace }) => {
     <When
       asyncState={{ ...rolesAsync, data: rolesAsync.roles }}
       loading={() => <TableSkeleton />}
-      error={(e) => <ErrorState error={e} headerTitle={title} />}
+      error={(e) => <ErrorState error={e} title={title} />}
       success={(data) => {
         if (!data.length)
           return (
-            <EmptyState headerTitle={title} onAdd={() => handleAddOrupdate()} />
+            <EmptyState title={title} onAdd={() => handleAddOrupdate()} />
           );
         return (
           <TableContainer

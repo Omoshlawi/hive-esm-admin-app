@@ -61,7 +61,7 @@ const PrivilegesPage: FC<PrivilegesPageProps> = ({ launchWorkspace }) => {
   const tableData = useMemo<TableData>(
     () => ({
       head: ["#", "Name", "Description", "Resource", "CreatedAt", "Actions"],
-      body: privilegesAsync?.privileges.map((docType, i) => [
+      body: privilegesAsync?.privileges?.map((docType, i) => [
         i + 1,
         docType.name,
         docType.description,
@@ -103,11 +103,11 @@ const PrivilegesPage: FC<PrivilegesPageProps> = ({ launchWorkspace }) => {
     <When
       asyncState={{ ...privilegesAsync, data: privilegesAsync.privileges }}
       loading={() => <TableSkeleton />}
-      error={(e) => <ErrorState error={e} headerTitle={title} />}
+      error={(e) => <ErrorState error={e} title={title} />}
       success={(data) => {
         if (!data.length)
           return (
-            <EmptyState headerTitle={title} onAdd={() => handleAddOrupdate()} />
+            <EmptyState title={title} onAdd={() => handleAddOrupdate()} />
           );
         return (
           <TableContainer

@@ -13,6 +13,7 @@
     "@mantine/modals": "^8.0.2",
     "@mantine/notifications": "8.0.2",
     "@tabler/icons-react": "^3.33.0",
+    "@tanstack/react-table": "^8.21.3",
     "@hive/esm-core-components": "../hive-esm-core/packages/esm-core-components/hive-esm-core-components-v1.0.0.tgz",
     "@hive/esm-core-api": "../hive-esm-core/packages/esm-core-api/hive-esm-core-api-v1.0.0.tgz",
     "@hookform/resolvers": "^5.0.1",

@@ -64,7 +64,7 @@ const MyOrganizationsPage: FC<MyOrganizationsPageProps> = ({
   const tableData = useMemo<TableData>(
     () => ({
       head: ["#", "Name", "Description", "CreatedAt", "Actions"],
-      body: state?.organizationsMemberships.map((docType, i) => [
+      body: state?.organizationsMemberships?.map((docType, i) => [
         i + 1,
         docType.organization.name,
         docType.organization.description,
@@ -104,12 +104,10 @@ const MyOrganizationsPage: FC<MyOrganizationsPageProps> = ({
     <When
       asyncState={{ ...state, data: state.organizationsMemberships }}
       loading={() => <TableSkeleton />}
-      error={(e) => <ErrorState error={e} headerTitle={title} />}
+      error={(e) => <ErrorState error={e} title={title} />}
       success={(data) => {
         if (!data.length)
-          return (
-            <EmptyState headerTitle={title} onAdd={() => handleAddUpdate()} />
-          );
+          return <EmptyState title={title} onAdd={() => handleAddUpdate()} />;
         return (
           <TableContainer
             title={title}
