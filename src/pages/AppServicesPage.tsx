@@ -1,22 +1,19 @@
 import {
-    DataTable,
-    DataTableColumnHeader,
-    EmptyState,
-    ErrorState,
-    TablerIcon,
-    TableSkeleton,
-    When,
+  DataTable,
+  DataTableColumnHeader,
+  EmptyState,
+  ErrorState,
+  TablerIcon,
+  TableSkeleton,
+  When,
 } from "@hive/esm-core-components";
-import {
-    ActionIcon,
-    Chip,
-    Menu
-} from "@mantine/core";
+import { ActionIcon, Button, Chip, Menu } from "@mantine/core";
 import { ColumnDef } from "@tanstack/react-table";
 import React, { useState } from "react";
 import AppServiceResourcesExpandedRow from "../components/AppServiceResourcesExpandedRow";
 import { useAppServices } from "../hooks";
 import { AppService } from "../types";
+import { IconPlus } from "@tabler/icons-react";
 
 const AppServicesPage = () => {
   const { mutate, ...state } = useAppServices();
@@ -36,6 +33,15 @@ const AppServicesPage = () => {
             data={data}
             renderExpandedRow={(row) => (
               <AppServiceResourcesExpandedRow service={row.original} />
+            )}
+            withColumnViewOptions
+            title="Application services"
+            renderActions={() => (
+              <>
+                <Button leftSection={<IconPlus size={16} />}>
+                  Add app service
+                </Button>
+              </>
             )}
           />
         );

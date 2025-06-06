@@ -1,4 +1,7 @@
+import { useSession } from "@hive/esm-core-api";
 import {
+  DataTable,
+  DataTableColumnHeader,
   EmptyState,
   ErrorState,
   TablerIcon,
@@ -6,22 +9,14 @@ import {
   When,
 } from "@hive/esm-core-components";
 import { PiletApi } from "@hive/esm-shell-app";
-import {
-  ActionIcon,
-  Button,
-  Loader,
-  Menu,
-  Table,
-  TableData,
-  Text,
-} from "@mantine/core";
+import { ActionIcon, Badge, Button, Group, Text } from "@mantine/core";
 import { openConfirmModal } from "@mantine/modals";
-import React, { FC, useMemo } from "react";
+import { IconPlus } from "@tabler/icons-react";
+import { ColumnDef } from "@tanstack/react-table";
+import React, { FC } from "react";
 import OrgaznizationForm from "../forms/OrgaznizationForm";
 import { useMyOrganizations } from "../hooks";
-import { Organization } from "../types";
-import { useSession } from "@hive/esm-core-api";
-import { IconPlus } from "@tabler/icons-react";
+import { Organization, OrganizationMembership } from "../types";
 
 type MyOrganizationsPageProps = Pick<PiletApi, "launchWorkspace"> & {};
 
@@ -60,45 +55,43 @@ const MyOrganizationsPage: FC<MyOrganizationsPageProps> = ({
       },
     });
   };
-  const tableData = useMemo<TableData>(
-    () => ({
-      head: ["#", "Name", "Description", "CreatedAt", "Actions"],
-      body: state?.organizationsMemberships?.map((docType, i) => [
-        i + 1,
-        docType.organization.name,
-        docType.organization.description,
-        new Date(docType.createdAt).toDateString(),
-        <Menu shadow="md" width={200}>
-          <Menu.Target>
-            <ActionIcon variant="outline" aria-label="Settings">
-              <TablerIcon
-                name="dotsVertical"
-                style={{ width: "70%", height: "70%" }}
-                stroke={1.5}
-              />
-            </ActionIcon>
-          </Menu.Target>
-          <Menu.Dropdown>
-            <Menu.Item
-              leftSection={<TablerIcon name="edit" size={14} />}
-              color="green"
-              onClick={() => handleAddUpdate(docType.organization)}
-            >
-              Edit
-            </Menu.Item>
-            <Menu.Item
-              leftSection={<TablerIcon name="trash" size={14} />}
-              color="red"
-              onClick={() => handleDelete(docType.organization)}
-            >
-              Delete
-            </Menu.Item>
-          </Menu.Dropdown>
-        </Menu>,
-      ]),
-    }),
-    [state.organizationsMemberships]
-  );
+  const actions: ColumnDef<OrganizationMembership> = {
+    id: "actions",
+    header: "Actions",
+    enableSorting: false,
+    enableHiding: false,
+    cell({ row }) {
+      const membership = row.original;
+      return (
+        <Group>
+          <ActionIcon
+            variant="outline"
+            aria-label="Settings"
+            color="green"
+            onClick={() => handleAddUpdate(membership.organization)}
+          >
+            <TablerIcon
+              name="edit"
+              style={{ width: "70%", height: "70%" }}
+              stroke={1.5}
+            />
+          </ActionIcon>
+          <ActionIcon
+            variant="outline"
+            aria-label="Settings"
+            color="red"
+            onClick={() => handleDelete(membership.organization)}
+          >
+            <TablerIcon
+              name="trash"
+              style={{ width: "70%", height: "70%" }}
+              stroke={1.5}
+            />
+          </ActionIcon>
+        </Group>
+      );
+    },
+  };
   return (
     <When
       asyncState={{ ...state, data: state.organizationsMemberships }}
@@ -108,17 +101,19 @@ const MyOrganizationsPage: FC<MyOrganizationsPageProps> = ({
         if (!data.length)
           return <EmptyState title={title} onAdd={() => handleAddUpdate()} />;
         return (
-          <Table
-            striped
-            data={tableData}
-            highlightOnHover
-            styles={{
-              td: {
-                whiteSpace: "nowrap",
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-              },
-            }}
+          <DataTable
+            data={data}
+            columns={[...columns, actions]}
+            title="My Organizations"
+            withColumnViewOptions
+            renderActions={() => (
+              <Button
+                onClick={() => handleAddUpdate()}
+                leftSection={<IconPlus />}
+              >
+                Add Organization
+              </Button>
+            )}
           />
         );
       }}
@@ -127,3 +122,44 @@ const MyOrganizationsPage: FC<MyOrganizationsPageProps> = ({
 };
 
 export default MyOrganizationsPage;
+const columns: ColumnDef<OrganizationMembership>[] = [
+  {
+    accessorKey: "organization.name",
+    header: "Name",
+  },
+  { accessorKey: "organization.description", header: "Description" },
+  {
+    accessorKey: "isAdmin",
+    header: "MyRole",
+    cell({ getValue }) {
+      const isAdmin = getValue<boolean>();
+      return (
+        <Badge color={isAdmin ? "teal" : undefined} size="xs">
+          {isAdmin ? "Creator" : "Member"}
+        </Badge>
+      );
+    },
+  },
+  {
+    accessorKey: "createdAt",
+    header: "Date Joined",
+    cell({ getValue }) {
+      const date = getValue<string>();
+      return new Date(date).toDateString();
+    },
+  },
+  {
+    accessorKey: "voided",
+    header({ column }) {
+      return <DataTableColumnHeader column={column} title="Active status" />;
+    },
+    cell({ getValue }) {
+      const voided = getValue<boolean>();
+      return (
+        <Badge color={voided ? "red" : "teal"} size="xs">
+          {voided ? "Inactive" : "Active"}
+        </Badge>
+      );
+    },
+  },
+];

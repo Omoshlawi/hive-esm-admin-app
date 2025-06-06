@@ -99,13 +99,6 @@ const AppServiceResourcesExpandedRow: FC<
               striped
               data={tableData}
               highlightOnHover
-              styles={{
-                td: {
-                  whiteSpace: "nowrap",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                },
-              }}
             />
           </Stack>
         </Paper>

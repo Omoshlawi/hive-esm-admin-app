@@ -1,10 +1,18 @@
 import React, { useMemo } from "react";
 import { useResources } from "../hooks";
-import { ActionIcon, Button, Menu, Table, TableData } from "@mantine/core";
+import {
+  ActionIcon,
+  Button,
+  Menu,
+  Paper,
+  Stack,
+  Table,
+  TableData,
+  Title,
+} from "@mantine/core";
 import {
   EmptyState,
   ErrorState,
-  TableContainer,
   TablerIcon,
   TableSkeleton,
   When,
@@ -58,12 +66,13 @@ const ResourcesPage = () => {
     <When
       asyncState={{ ...resoucesAsync, data: resoucesAsync.resources }}
       loading={() => <TableSkeleton />}
-      error={(e) => <ErrorState error={e} headerTitle={title} />}
+      error={(e) => <ErrorState error={e} title={title} />}
       success={(data) => {
         if (!data.length)
-          return <EmptyState headerTitle={title} message="No resources" />;
+          return <EmptyState title={title} message="No resources" />;
         return (
-          <TableContainer title={title}>
+          <Paper component={Stack}>
+            <Title>Resources</Title>
             <Table
               striped
               data={tableData}
@@ -76,7 +85,7 @@ const ResourcesPage = () => {
                 },
               }}
             />
-          </TableContainer>
+          </Paper>
         );
       }}
     />

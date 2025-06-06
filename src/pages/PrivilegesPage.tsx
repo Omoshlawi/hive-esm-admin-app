@@ -9,6 +9,7 @@ import {
   Button,
   Loader,
   Menu,
+  Paper,
   Table,
   TableData,
   Text,
@@ -16,7 +17,6 @@ import {
 import {
   EmptyState,
   ErrorState,
-  TableContainer,
   TablerIcon,
   TableSkeleton,
   When,
@@ -110,7 +110,7 @@ const PrivilegesPage: FC<PrivilegesPageProps> = ({ launchWorkspace }) => {
             <EmptyState title={title} onAdd={() => handleAddOrupdate()} />
           );
         return (
-          <TableContainer
+          <Paper
             title={title}
             actions={
               <Button
@@ -134,7 +134,7 @@ const PrivilegesPage: FC<PrivilegesPageProps> = ({ launchWorkspace }) => {
                 },
               }}
             />
-          </TableContainer>
+          </Paper>
         );
       }}
     />
