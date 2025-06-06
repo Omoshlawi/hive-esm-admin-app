@@ -1,4 +1,4 @@
-import { apiFetch, APIFetchResponse } from "@hive/esm-core-api";
+import { apiFetch, APIFetchResponse, constructUrl } from "@hive/esm-core-api";
 import { ServiceResourcesSchemas } from "../types";
 import useSWR from "swr";
 
@@ -10,7 +10,7 @@ export const useAppServicesResourceSchema = (serviceName: string) => {
     });
   };
 
-  const path = "/resources-schema";
+  const path = constructUrl("/resources-schema", { serviceName: serviceName });
   const { data, error, isLoading, mutate } = useSWR<
     APIFetchResponse<ServiceResourcesSchemas>
   >(path, fetcher, { refreshInterval: 1000 });

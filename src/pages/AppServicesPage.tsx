@@ -1,26 +1,22 @@
 import {
-  DataTable,
-  DataTableColumnHeader,
-  EmptyState,
-  ErrorState,
-  TablerIcon,
-  TableSkeleton,
-  When,
+    DataTable,
+    DataTableColumnHeader,
+    EmptyState,
+    ErrorState,
+    TablerIcon,
+    TableSkeleton,
+    When,
 } from "@hive/esm-core-components";
 import {
-  ActionIcon,
-  Button,
-  Checkbox,
-  Chip,
-  Menu,
-  Paper,
-  Text,
+    ActionIcon,
+    Chip,
+    Menu
 } from "@mantine/core";
 import { ColumnDef } from "@tanstack/react-table";
 import React, { useState } from "react";
+import AppServiceResourcesExpandedRow from "../components/AppServiceResourcesExpandedRow";
 import { useAppServices } from "../hooks";
 import { AppService } from "../types";
-import { IconArrowsDownUp } from "@tabler/icons-react";
 
 const AppServicesPage = () => {
   const { mutate, ...state } = useAppServices();
@@ -38,7 +34,9 @@ const AppServicesPage = () => {
           <DataTable
             columns={columns}
             data={data}
-            renderExpandedRow={() => <Paper p={"md"}>Something here</Paper>}
+            renderExpandedRow={(row) => (
+              <AppServiceResourcesExpandedRow service={row.original} />
+            )}
           />
         );
       }}

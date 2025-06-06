@@ -1,7 +1,6 @@
 import {
   EmptyState,
   ErrorState,
-  TableContainer,
   TablerIcon,
   TableSkeleton,
   When,
@@ -109,31 +108,18 @@ const MyOrganizationsPage: FC<MyOrganizationsPageProps> = ({
         if (!data.length)
           return <EmptyState title={title} onAdd={() => handleAddUpdate()} />;
         return (
-          <TableContainer
-            title={title}
-            actions={
-              <Button
-                variant="subtle"
-                leftSection={<IconPlus />}
-                onClick={() => handleAddUpdate()}
-              >
-                Add
-              </Button>
-            }
-          >
-            <Table
-              striped
-              data={tableData}
-              highlightOnHover
-              styles={{
-                td: {
-                  whiteSpace: "nowrap",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                },
-              }}
-            />
-          </TableContainer>
+          <Table
+            striped
+            data={tableData}
+            highlightOnHover
+            styles={{
+              td: {
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+              },
+            }}
+          />
         );
       }}
     />
