@@ -1,17 +1,15 @@
-import {
-  HeaderLink,
-  UserHasAccess,
-  withUserAccess,
-} from "@hive/esm-core-components";
+import { HeaderLink, UserHasAccess } from "@hive/esm-core-components";
 import type { PiletApi } from "@hive/esm-shell-app";
 import * as React from "react";
-import MyOrganizationsPage from "./pages/MyOrganizationsPage";
+import {
+  Appservices,
+  MyOrganizations,
+  OrganizationStaff,
+  Privileges,
+  Resources,
+  Roles,
+} from "./pages";
 import { EXTENSION_SLOTS } from "./utils/constants";
-import PrivilegesPage from "./pages/PrivilegesPage";
-import RolesPage from "./pages/RolesPage";
-import ResourcesPage from "./pages/ResourcesPage";
-import AppServicesPage from "./pages/AppServicesPage";
-import OrganizationStaffPage from "./pages/OrganizationStaffPage";
 
 export function setup(app: PiletApi) {
   const {
@@ -21,70 +19,38 @@ export function setup(app: PiletApi) {
   } = app;
   app.registerPage(
     "/dashboard/my-organizations",
-    withUserAccess(
-      () => <MyOrganizationsPage launchWorkspace={launchWorkspace} />,
-      {
-        isAuthenticated: (session) => session.isAuthenticated,
-        requiresAuth: true,
-      }
-    ),
+    () => <MyOrganizations launchWorkspace={launchWorkspace} />,
     {
       layout: "dashboard",
     }
   );
   app.registerPage(
     "/dashboard/staff",
-    withUserAccess(
-      () => <OrganizationStaffPage launchWorkspace={launchWorkspace} />,
-      {
-        isAuthenticated: (session) => session.isAuthenticated,
-        requiresAuth: true,
-      }
-    ),
+    () => <OrganizationStaff launchWorkspace={launchWorkspace} />,
     {
       layout: "dashboard",
     }
   );
   app.registerPage(
     "/dashboard/privileges",
-    withUserAccess(() => <PrivilegesPage launchWorkspace={launchWorkspace} />, {
-      isAuthenticated: (session) => session.isAuthenticated,
-      requiresAuth: true,
-    }),
+    () => <Privileges launchWorkspace={launchWorkspace} />,
     {
       layout: "dashboard",
     }
   );
   app.registerPage(
     "/dashboard/roles",
-    withUserAccess(() => <RolesPage launchWorkspace={launchWorkspace} />, {
-      isAuthenticated: (session) => session.isAuthenticated,
-      requiresAuth: true,
-    }),
+    () => <Roles launchWorkspace={launchWorkspace} />,
     {
       layout: "dashboard",
     }
   );
-  app.registerPage(
-    "/dashboard/resources",
-    withUserAccess(ResourcesPage, {
-      isAuthenticated: (session) => session.isAuthenticated,
-      requiresAuth: true,
-    }),
-    {
-      layout: "dashboard",
-    }
-  );
-  app.registerPage(
-    "/dashboard/app-services",
-    withUserAccess(AppServicesPage, {
-      isAuthenticated: (session) => session.isAuthenticated,
-      requiresAuth: true,
-    }),
-    {
-      layout: "dashboard",
-    }
-  );
+  app.registerPage("/dashboard/resources", Resources, {
+    layout: "dashboard",
+  });
+  app.registerPage("/dashboard/app-services", Appservices, {
+    layout: "dashboard",
+  });
   app.registerExtension(
     EXTENSION_SLOTS.DASHBOARD_QUICK_ACTION_SLOT,
     React.lazy(() => import("./components/AddOrganizationQucikAction"))
