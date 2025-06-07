@@ -74,6 +74,7 @@ export function setup(app: PiletApi) {
         to="/dashboard/my-organizations"
         label="My Organizations"
         onClose={onClose ?? (() => {})}
+        icon="buildings"
       />
     ),
     {
@@ -86,6 +87,7 @@ export function setup(app: PiletApi) {
         to="/dashboard/privileges"
         label="Prividges"
         onClose={onClose ?? (() => {})}
+        icon="shieldCheck"
       />
     ),
     {
@@ -98,6 +100,7 @@ export function setup(app: PiletApi) {
         to="/dashboard/roles"
         label="Roles"
         onClose={onClose ?? (() => {})}
+        icon="userShield"
       />
     ),
     {
@@ -110,6 +113,7 @@ export function setup(app: PiletApi) {
         to="/dashboard/resources"
         label="Resources"
         onClose={onClose ?? (() => {})}
+        icon="database"
       />
     ),
     {
@@ -122,6 +126,7 @@ export function setup(app: PiletApi) {
         to="/dashboard/app-services"
         label="App services"
         onClose={onClose ?? (() => {})}
+        icon="server2"
       />
     ),
     {
@@ -134,6 +139,7 @@ export function setup(app: PiletApi) {
         to="/dashboard/staff"
         label="Staffs"
         onClose={onClose ?? (() => {})}
+        icon="usersGroup"
       />
     ),
     {
