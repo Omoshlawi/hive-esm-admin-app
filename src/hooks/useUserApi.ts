@@ -2,12 +2,12 @@ import {
   apiFetch,
   APIFetchResponse,
   constructUrl,
-  debounce,
   User,
 } from "@hive/esm-core-api";
-import { UserFormData } from "../types";
+import { useDebouncedValue } from "@mantine/hooks";
 import { useState } from "react";
 import useSWR from "swr";
+import { UserFormData } from "../types";
 
 const addUser = async (data: UserFormData) => {
   return await apiFetch<User>("/users", { method: "POST", data });
@@ -52,14 +52,19 @@ export const useUserApi = () => {
 
 export const useSearchUser = () => {
   const [search, setSearch] = useState<string>();
-  const url = constructUrl("/users", { search, v: "custom:include(person)" });
+  const [debounced] = useDebouncedValue(search, 500);
+  const url = constructUrl("/users", {
+    search: debounced,
+    v: "custom:include(person)",
+  });
   const { data, error, isLoading } = useSWR<
     APIFetchResponse<{ results: Array<User> }>
-  >(search ? url : undefined);
+  >(debounced ? url : undefined);
   return {
     users: data?.data?.results ?? [],
     isLoading,
     error,
-    searchUser: debounce(setSearch, 300),
+    searchUser: setSearch,
+    searchValue: search,
   };
 };

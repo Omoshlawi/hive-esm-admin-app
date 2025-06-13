@@ -40,6 +40,7 @@ const StaffForm: React.FC<StaffFormProps> = ({
     isLoading: isUsersloading,
     error: userError,
     users,
+    searchValue,
   } = useSearchUser();
   const { error: rolesError, isLoading, roles } = useRoles();
   const form = useForm<OrganizationMembershipFormData>({
@@ -108,10 +109,11 @@ const StaffForm: React.FC<StaffFormProps> = ({
                       label: u.username,
                       value: u.id,
                     }))}
+                    searchValue={searchValue}
                     onSearchChange={searchUser}
                     placeholder="search user"
                     onChange={(_value, _) => field.onChange(_value)}
-                    label="Resource"
+                    label="User"
                     error={error?.message}
                     nothingFoundMessage="Nothing found..."
                     clearable
