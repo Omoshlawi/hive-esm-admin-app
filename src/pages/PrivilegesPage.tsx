@@ -1,21 +1,5 @@
-import React, { FC, useMemo } from "react";
-import { usePrivileges } from "../hooks";
-import type { PiletApi } from "@hive/esm-shell-app";
-import PriviledgeForm from "../forms/PriviledgeForm";
-import { Privilege } from "../types";
-import { openConfirmModal } from "@mantine/modals";
 import {
-  ActionIcon,
-  Button,
-  Group,
-  Loader,
-  Menu,
-  Paper,
-  Table,
-  TableData,
-  Text,
-} from "@mantine/core";
-import {
+  DashboardPageHeader,
   DataTable,
   EmptyState,
   ErrorState,
@@ -23,13 +7,26 @@ import {
   TableSkeleton,
   When,
 } from "@hive/esm-core-components";
+import type { PiletApi } from "@hive/esm-shell-app";
+import {
+  ActionIcon,
+  Box,
+  Button,
+  Group,
+  Stack,
+  Text
+} from "@mantine/core";
+import { openConfirmModal } from "@mantine/modals";
 import { IconPlus } from "@tabler/icons-react";
 import { ColumnDef } from "@tanstack/react-table";
+import React, { FC } from "react";
+import PriviledgeForm from "../forms/PriviledgeForm";
+import { usePrivileges } from "../hooks";
+import { Privilege } from "../types";
 type PrivilegesPageProps = Pick<PiletApi, "launchWorkspace"> & {};
 
 const PrivilegesPage: FC<PrivilegesPageProps> = ({ launchWorkspace }) => {
   const privilegesAsync = usePrivileges();
-  const title = "Privileges";
   const handleAddOrupdate = (privilege?: Privilege) => {
     const dispose = launchWorkspace(
       <PriviledgeForm
@@ -99,34 +96,42 @@ const PrivilegesPage: FC<PrivilegesPageProps> = ({ launchWorkspace }) => {
     },
   };
   return (
-    <When
-      asyncState={{ ...privilegesAsync, data: privilegesAsync.privileges }}
-      loading={() => <TableSkeleton />}
-      error={(e) => <ErrorState error={e} title={title} />}
-      success={(data) => {
-        if (!data.length)
-          return <EmptyState title={title} onAdd={() => handleAddOrupdate()} />;
-        return (
-          <DataTable
-            columns={[...columns, actions]}
-            data={data}
-            renderActions={() => (
-              <>
-                <Button
-                  variant="light"
-                  leftSection={<IconPlus />}
-                  onClick={() => handleAddOrupdate()}
-                >
-                  Add
-                </Button>
-              </>
-            )}
-            title="Privileges"
-            withColumnViewOptions
-          />
-        );
-      }}
-    />
+    <Stack>
+      <Box>
+        <DashboardPageHeader
+          title="Priviledges"
+          subTitle={"Organization priviledges"}
+          icon={"shieldCheck"}
+        />
+      </Box>
+      <When
+        asyncState={{ ...privilegesAsync, data: privilegesAsync.privileges }}
+        loading={() => <TableSkeleton />}
+        error={(e) => <ErrorState error={e} />}
+        success={(data) => {
+          if (!data.length)
+            return <EmptyState onAdd={() => handleAddOrupdate()} />;
+          return (
+            <DataTable
+              columns={[...columns, actions]}
+              data={data}
+              renderActions={() => (
+                <>
+                  <Button
+                    variant="light"
+                    leftSection={<IconPlus />}
+                    onClick={() => handleAddOrupdate()}
+                  >
+                    Add
+                  </Button>
+                </>
+              )}
+              withColumnViewOptions
+            />
+          );
+        }}
+      />
+    </Stack>
   );
 };
 

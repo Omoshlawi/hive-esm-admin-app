@@ -1,4 +1,5 @@
 import {
+  DashboardPageHeader,
   DataTable,
   EmptyState,
   ErrorState,
@@ -7,14 +8,14 @@ import {
   When,
 } from "@hive/esm-core-components";
 import { PiletApi } from "@hive/esm-shell-app";
-import { ActionIcon, Button, Group, Text } from "@mantine/core";
+import { ActionIcon, Box, Button, Group, Stack, Text } from "@mantine/core";
 import { openConfirmModal } from "@mantine/modals";
 import { IconPlus } from "@tabler/icons-react";
 import { ColumnDef } from "@tanstack/react-table";
 import React, { FC } from "react";
 import RoleForm from "../forms/RoleForm";
 import { useRoles } from "../hooks";
-import { Privilege, Role, RolePrivilege } from "../types";
+import { Role, RolePrivilege } from "../types";
 type RolesPageProps = Pick<PiletApi, "launchWorkspace"> & {};
 
 const RolesPage: FC<RolesPageProps> = ({ launchWorkspace }) => {
@@ -89,34 +90,42 @@ const RolesPage: FC<RolesPageProps> = ({ launchWorkspace }) => {
   };
 
   return (
-    <When
-      asyncState={{ ...rolesAsync, data: rolesAsync.roles }}
-      loading={() => <TableSkeleton />}
-      error={(e) => <ErrorState error={e} title={title} />}
-      success={(data) => {
-        if (!data.length)
-          return <EmptyState title={title} onAdd={() => handleAddOrupdate()} />;
-        return (
-          <DataTable
-            data={data}
-            columns={[...columns, actions]}
-            renderActions={() => (
-              <>
-                <Button
-                  variant="light"
-                  leftSection={<IconPlus />}
-                  onClick={() => handleAddOrupdate()}
-                >
-                  Add
-                </Button>
-              </>
-            )}
-            title="Roles"
-            withColumnViewOptions
-          />
-        );
-      }}
-    />
+    <Stack>
+      <Box>
+        <DashboardPageHeader
+          title="Roles"
+          subTitle={"Organization roles"}
+          icon={"shieldCheck"}
+        />
+      </Box>
+      <When
+        asyncState={{ ...rolesAsync, data: rolesAsync.roles }}
+        loading={() => <TableSkeleton />}
+        error={(e) => <ErrorState error={e} />}
+        success={(data) => {
+          if (!data.length)
+            return <EmptyState onAdd={() => handleAddOrupdate()} />;
+          return (
+            <DataTable
+              data={data}
+              columns={[...columns, actions]}
+              renderActions={() => (
+                <>
+                  <Button
+                    variant="light"
+                    leftSection={<IconPlus />}
+                    onClick={() => handleAddOrupdate()}
+                  >
+                    Add
+                  </Button>
+                </>
+              )}
+              withColumnViewOptions
+            />
+          );
+        }}
+      />
+    </Stack>
   );
 };
 

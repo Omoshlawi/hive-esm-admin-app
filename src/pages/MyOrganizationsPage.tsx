@@ -7,9 +7,18 @@ import {
   TablerIcon,
   TableSkeleton,
   When,
+  DashboardPageHeader,
 } from "@hive/esm-core-components";
 import { PiletApi } from "@hive/esm-shell-app";
-import { ActionIcon, Badge, Button, Group, Text } from "@mantine/core";
+import {
+  ActionIcon,
+  Badge,
+  Button,
+  Group,
+  Text,
+  Stack,
+  Box,
+} from "@mantine/core";
 import { openConfirmModal } from "@mantine/modals";
 import { IconPlus } from "@tabler/icons-react";
 import { ColumnDef } from "@tanstack/react-table";
@@ -25,7 +34,6 @@ const MyOrganizationsPage: FC<MyOrganizationsPageProps> = ({
 }) => {
   const session = useSession();
   const state = useMyOrganizations(session.user?.id);
-  const title = "My Organizations";
 
   const handleAddUpdate = (organization?: Organization) => {
     const dispose = launchWorkspace(
@@ -93,32 +101,40 @@ const MyOrganizationsPage: FC<MyOrganizationsPageProps> = ({
     },
   };
   return (
-    <When
-      asyncState={{ ...state, data: state.organizationsMemberships }}
-      loading={() => <TableSkeleton />}
-      error={(e) => <ErrorState error={e} title={title} />}
-      success={(data) => {
-        if (!data.length)
-          return <EmptyState title={title} onAdd={() => handleAddUpdate()} />;
-        return (
-          <DataTable
-            data={data}
-            columns={[...columns, actions]}
-            title="My Organizations"
-            withColumnViewOptions
-            renderActions={() => (
-              <Button
-                onClick={() => handleAddUpdate()}
-                leftSection={<IconPlus />}
-                variant="light"
-              >
-                Add
-              </Button>
-            )}
-          />
-        );
-      }}
-    />
+    <Stack>
+      <Box>
+        <DashboardPageHeader
+          title="Organization"
+          subTitle={"My organizations"}
+          icon={"buildings"}
+        />
+      </Box>
+      <When
+        asyncState={{ ...state, data: state.organizationsMemberships }}
+        loading={() => <TableSkeleton />}
+        error={(e) => <ErrorState error={e} />}
+        success={(data) => {
+          if (!data.length)
+            return <EmptyState onAdd={() => handleAddUpdate()} />;
+          return (
+            <DataTable
+              data={data}
+              columns={[...columns, actions]}
+              withColumnViewOptions
+              renderActions={() => (
+                <Button
+                  onClick={() => handleAddUpdate()}
+                  leftSection={<IconPlus />}
+                  variant="light"
+                >
+                  Add
+                </Button>
+              )}
+            />
+          );
+        }}
+      />
+    </Stack>
   );
 };
 

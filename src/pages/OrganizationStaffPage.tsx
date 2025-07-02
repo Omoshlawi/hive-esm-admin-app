@@ -5,8 +5,17 @@ import { debounceAsync } from "@hive/esm-core-api";
 import StaffForm from "../forms/StaffForm";
 import { ColumnDef } from "@tanstack/react-table";
 import { OrganizationMembership } from "../types";
-import { ActionIcon, Badge, Button, Group, Text } from "@mantine/core";
 import {
+  ActionIcon,
+  Badge,
+  Box,
+  Button,
+  Group,
+  Stack,
+  Text,
+} from "@mantine/core";
+import {
+  DashboardPageHeader,
   DataTable,
   EmptyState,
   ErrorState,
@@ -97,36 +106,42 @@ const OrganizationStaffPage: React.FC<OrganizationStaffPageProps> = ({
     },
   };
   return (
-    <When
-      asyncState={{ ...staffsAsync, data: staffsAsync.staffs }}
-      loading={() => <TableSkeleton />}
-      error={(e) => <ErrorState error={e} title={"Staffs"} />}
-      success={(data) => {
-        if (!data.length)
+    <Stack>
+      <Box>
+        <DashboardPageHeader
+          title="Staff"
+          subTitle={"Organization staffs"}
+          icon={"usersGroup"}
+        />
+      </Box>
+      <When
+        asyncState={{ ...staffsAsync, data: staffsAsync.staffs }}
+        loading={() => <TableSkeleton />}
+        error={(e) => <ErrorState error={e} />}
+        success={(data) => {
+          if (!data.length)
+            return <EmptyState onAdd={() => handleAddUpdateStaff()} />;
           return (
-            <EmptyState title={"Staffs"} onAdd={() => handleAddUpdateStaff()} />
+            <DataTable
+              columns={[...columns, actions]}
+              data={data}
+              renderActions={() => (
+                <>
+                  <Button
+                    variant="light"
+                    leftSection={<IconPlus />}
+                    onClick={() => handleAddUpdateStaff()}
+                  >
+                    Add
+                  </Button>
+                </>
+              )}
+              withColumnViewOptions
+            />
           );
-        return (
-          <DataTable
-            columns={[...columns, actions]}
-            data={data}
-            renderActions={() => (
-              <>
-                <Button
-                  variant="light"
-                  leftSection={<IconPlus />}
-                  onClick={() => handleAddUpdateStaff()}
-                >
-                  Add
-                </Button>
-              </>
-            )}
-            title="Privileges"
-            withColumnViewOptions
-          />
-        );
-      }}
-    />
+        }}
+      />
+    </Stack>
   );
 };
 

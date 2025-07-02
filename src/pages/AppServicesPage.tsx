@@ -1,4 +1,5 @@
 import {
+  DashboardPageHeader,
   DataTable,
   DataTableColumnHeader,
   EmptyState,
@@ -7,46 +8,52 @@ import {
   TableSkeleton,
   When,
 } from "@hive/esm-core-components";
-import { ActionIcon, Button, Chip, Menu } from "@mantine/core";
+import { ActionIcon, Box, Button, Chip, Stack } from "@mantine/core";
+import { IconPlus } from "@tabler/icons-react";
 import { ColumnDef } from "@tanstack/react-table";
-import React, { useState } from "react";
+import React from "react";
 import AppServiceResourcesExpandedRow from "../components/AppServiceResourcesExpandedRow";
 import { useAppServices } from "../hooks";
 import { AppService } from "../types";
-import { IconPlus } from "@tabler/icons-react";
 
 const AppServicesPage = () => {
   const { mutate, ...state } = useAppServices();
-  const [] = useState();
-  const title = "App Services";
 
   return (
-    <When
-      asyncState={{ ...state, data: state.appServices }}
-      loading={() => <TableSkeleton />}
-      error={(e) => <ErrorState error={e} title={title} />}
-      success={(data) => {
-        if (!data.length) return <EmptyState title={title} />;
-        return (
-          <DataTable
-            columns={columns}
-            data={data}
-            renderExpandedRow={(row) => (
-              <AppServiceResourcesExpandedRow service={row.original} />
-            )}
-            withColumnViewOptions
-            title="Application services"
-            renderActions={() => (
-              <>
-                <Button leftSection={<IconPlus size={16} />} variant="light">
-                  Add
-                </Button>
-              </>
-            )}
-          />
-        );
-      }}
-    />
+    <Stack>
+      <Box>
+        <DashboardPageHeader
+          title="Service"
+          subTitle={"Application service"}
+          icon={"server2"}
+        />
+      </Box>
+      <When
+        asyncState={{ ...state, data: state.appServices }}
+        loading={() => <TableSkeleton />}
+        error={(e) => <ErrorState error={e} />}
+        success={(data) => {
+          if (!data.length) return <EmptyState />;
+          return (
+            <DataTable
+              columns={columns}
+              data={data}
+              renderExpandedRow={(row) => (
+                <AppServiceResourcesExpandedRow service={row.original} />
+              )}
+              withColumnViewOptions
+              renderActions={() => (
+                <>
+                  <Button leftSection={<IconPlus size={16} />} variant="light">
+                    Add
+                  </Button>
+                </>
+              )}
+            />
+          );
+        }}
+      />
+    </Stack>
   );
 };
 
