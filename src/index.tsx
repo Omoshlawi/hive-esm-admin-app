@@ -10,6 +10,10 @@ import {
   Roles,
 } from "./pages";
 import { EXTENSION_SLOTS } from "./utils/constants";
+import {
+  AdminHeaderLink,
+  OrganizationContextHeaderLink,
+} from "./components/links";
 
 export function setup(app: PiletApi) {
   const {
@@ -83,7 +87,7 @@ export function setup(app: PiletApi) {
   );
   app.registerMenu(
     ({ onClose }: any) => (
-      <HeaderLink
+      <OrganizationContextHeaderLink
         to="/dashboard/privileges"
         label="Prividges"
         onClose={onClose ?? (() => {})}
@@ -96,7 +100,7 @@ export function setup(app: PiletApi) {
   );
   app.registerMenu(
     ({ onClose }: any) => (
-      <HeaderLink
+      <OrganizationContextHeaderLink
         to="/dashboard/roles"
         label="Roles"
         onClose={onClose ?? (() => {})}
@@ -109,7 +113,7 @@ export function setup(app: PiletApi) {
   );
   app.registerMenu(
     ({ onClose }: any) => (
-      <HeaderLink
+      <AdminHeaderLink
         to="/dashboard/resources"
         label="Resources"
         onClose={onClose ?? (() => {})}
@@ -122,7 +126,7 @@ export function setup(app: PiletApi) {
   );
   app.registerMenu(
     ({ onClose }: any) => (
-      <HeaderLink
+      <AdminHeaderLink
         to="/dashboard/app-services"
         label="App services"
         onClose={onClose ?? (() => {})}
@@ -135,7 +139,7 @@ export function setup(app: PiletApi) {
   );
   app.registerMenu(
     ({ onClose }: any) => (
-      <HeaderLink
+      <OrganizationContextHeaderLink
         to="/dashboard/staff"
         label="Staffs"
         onClose={onClose ?? (() => {})}

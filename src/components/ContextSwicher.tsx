@@ -10,6 +10,7 @@ import { PiletApi } from "@hive/esm-shell-app";
 import { TablerIcon, When } from "@hive/esm-core-components";
 import { Organization } from "../types";
 import { useSession } from "@hive/esm-core-api";
+import { useMediaQuery } from "@mantine/hooks";
 type ContextSwicherProps = Pick<
   PiletApi,
   "exitOrganizationContext" | "switchOrganizationContext"
@@ -19,6 +20,7 @@ const ContextSwicher: React.FC<ContextSwicherProps> = ({
   exitOrganizationContext,
   switchOrganizationContext,
 }) => {
+  const isMobile = useMediaQuery("(max-width: 48em)");
   const session = useSession();
   const state = useMyOrganizations(session.user?.id);
   const { primaryColor } = useMantineTheme();
@@ -43,7 +45,7 @@ const ContextSwicher: React.FC<ContextSwicherProps> = ({
       shadow="md"
       width={200}
       transitionProps={{ transition: "pop" }}
-      position="right-start"
+      position={isMobile ? "bottom" : "right-start"}
     >
       <Menu.Target>
         <Button
