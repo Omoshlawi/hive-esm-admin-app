@@ -994,7 +994,7 @@
 
 "@hive/esm-shell-app@../hive-esm-core/packages/esm-shell-app/dist/emulator/hive-esm-shell-app-1.0.0.tgz":
   version "1.0.0"
-  resolved "../hive-esm-core/packages/esm-shell-app/dist/emulator/hive-esm-shell-app-1.0.0.tgz#f968a7addf0b0ec57847742219afd95f4a729c61"
+  resolved "../hive-esm-core/packages/esm-shell-app/dist/emulator/hive-esm-shell-app-1.0.0.tgz#a9c996b0dbc90068a859c77cb4a8f071e93df721"
 
 "@hookform/resolvers@5.0.1":
   version "5.0.1"
@@ -1029,10 +1029,10 @@
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
 
-"@mantine/core@8.0.2":
-  version "8.0.2"
-  resolved "https://registry.yarnpkg.com/@mantine/core/-/core-8.0.2.tgz#538c3f17d6e8e1505011ddffd7f341ece5db56f3"
-  integrity sha512-2Ps7bRTeTbRwAKTCL9xdflPz0pwOlTq6ohyTbDZMCADqecf09GHI7GiX+HJatqbPZ2t8jK0fN1b48YhjJaxTqg==
+"@mantine/core@8.2.1":
+  version "8.2.1"
+  resolved "https://registry.yarnpkg.com/@mantine/core/-/core-8.2.1.tgz#149b3f09c6b67833cb4b6d3eca1c5e7a966b7ca2"
+  integrity sha512-KxvydotyFRdrRbqULUX2G35/GddPFju9XQUv/vdDWu1ytIWZViTguc+WSj1aBd0DtfRrSaofU5ezZISEXVrPBA==
   dependencies:
     "@floating-ui/react" "^0.26.28"
     clsx "^2.1.1"
@@ -1041,49 +1041,49 @@
     react-textarea-autosize "8.5.9"
     type-fest "^4.27.0"
 
-"@mantine/dates@8.0.2":
-  version "8.0.2"
-  resolved "https://registry.yarnpkg.com/@mantine/dates/-/dates-8.0.2.tgz#f8dde223c721fd8e90d31799ec1348d841a43b53"
-  integrity sha512-V1xU00gECfykA4UFln8ulPsPHvaTncsg9zUbzCwqwEAYlZFG3Nnj5eBzzpV3IN1LNDPEVGb1gAOM6jZ+fi2uRQ==
+"@mantine/dates@8.2.1":
+  version "8.2.1"
+  resolved "https://registry.yarnpkg.com/@mantine/dates/-/dates-8.2.1.tgz#b50febeb0c7248673b57826374514104901b628d"
+  integrity sha512-xNeI+Jw7p9UYEsLbg+QKny4NZ1O3bL6rlrtJKGqOm3HQoATpbRTrdunmY2sIOYXcPEasSCe+y2Ye0fORUcMUEA==
   dependencies:
     clsx "^2.1.1"
 
-"@mantine/dropzone@8.1.0":
-  version "8.1.0"
-  resolved "https://registry.yarnpkg.com/@mantine/dropzone/-/dropzone-8.1.0.tgz#5c1a41a52a5c4e9959395ba1bb3745042ec47c58"
-  integrity sha512-holEgn03CgAFq+oO8QhwOrDTcMyL+7efxPehnP4CX04EI5yPoFD1L9xgDE83BMPw/++5IqzeVBfSyjfhgFMOxg==
+"@mantine/dropzone@8.2.1":
+  version "8.2.1"
+  resolved "https://registry.yarnpkg.com/@mantine/dropzone/-/dropzone-8.2.1.tgz#f7f4c7761d1dfa1e29567556f4d995a31ad7cc36"
+  integrity sha512-VyVe89os7aTshcyxvrllJSsS0nYBaX0ql5JAmGUXpcKDjJA/+daVeENZcqwHyY7Y9a3ok9adYVXezjqtysIAHg==
   dependencies:
     react-dropzone "14.3.8"
 
-"@mantine/hooks@8.0.2":
-  version "8.0.2"
-  resolved "https://registry.yarnpkg.com/@mantine/hooks/-/hooks-8.0.2.tgz#a5b72c8d61a5b3d2567f9e56593756fa5cd156e8"
-  integrity sha512-0jpEdC0KIAZ54D5kd9rJudrEm6vkvnrL9yYHnkuNbxokXSzDdYA/wpHnKR5WW+u6fW4JF6A6A7gN1vXKeC9MSw==
+"@mantine/hooks@8.2.1":
+  version "8.2.1"
+  resolved "https://registry.yarnpkg.com/@mantine/hooks/-/hooks-8.2.1.tgz#2fdfb0f20b941cd4beb3ed37f548fb7b69c97b6f"
+  integrity sha512-gnRDk5FXCD9fa0AjlAj9otCsZL9QJzVrpYZk9KjOEoP5XR1TEE2F9/rGbajh1UVjPnD3jUlNLRJMH0YHTlA65A==
 
-"@mantine/modals@8.0.2":
-  version "8.0.2"
-  resolved "https://registry.yarnpkg.com/@mantine/modals/-/modals-8.0.2.tgz#d37155b0064fb7c9eace43e04ad14ede7d849443"
-  integrity sha512-AAYDotb7vWZcBdCph4rjy7VNn9AyReRa+bea+g5xplC2G03Fxcd9Lve2rodhuNx/l6IQe7INRkD+fzXvpDGnew==
+"@mantine/modals@8.2.1":
+  version "8.2.1"
+  resolved "https://registry.yarnpkg.com/@mantine/modals/-/modals-8.2.1.tgz#388490fd0ca68238a539b269fcf684a4182e694c"
+  integrity sha512-9epGFabiH3N8y3BOqJQ4oar1ZaWKNckl1x8n+Q80+EqCnBA6/RMUTSUOA9BVO7yZD1LB7Qh0vgn6NrqvosPIjw==
 
-"@mantine/notifications@8.0.2":
-  version "8.0.2"
-  resolved "https://registry.yarnpkg.com/@mantine/notifications/-/notifications-8.0.2.tgz#8f3e1e3493743f548c722e77b8220e3bbab95db6"
-  integrity sha512-whSuoCCZxQF3VM40sumCte9tA79to8OCV/vv0z8PeVTj/eKlaTR+P9LKigO9ovhuNELrvvO3Rxcnno5aMBz0oA==
+"@mantine/notifications@8.2.1":
+  version "8.2.1"
+  resolved "https://registry.yarnpkg.com/@mantine/notifications/-/notifications-8.2.1.tgz#ab8083b87c676054aef1eb5963c3465b22541b37"
+  integrity sha512-9s4oN0ruX7AqUghZIXEwx9/t+fHATe/kvn5O5Zum+MFoOH46p8k4ljNb6BBDKTtT3clRHx7KHTR7OrLWlDEjrw==
   dependencies:
-    "@mantine/store" "8.0.2"
+    "@mantine/store" "8.2.1"
     react-transition-group "4.4.5"
 
-"@mantine/spotlight@8.0.2":
-  version "8.0.2"
-  resolved "https://registry.yarnpkg.com/@mantine/spotlight/-/spotlight-8.0.2.tgz#d33d23dd069814763c1e12aee3a9df3607ee7800"
-  integrity sha512-uqzSAaIAk7zQxs7uMWj/YFJA+EXmrnhYy7Y/kG4c/Us2QI2VWb2cgHVGhb3yzJFmjPhiXWjsaLf25AiyNdO53A==
+"@mantine/spotlight@8.2.1":
+  version "8.2.1"
+  resolved "https://registry.yarnpkg.com/@mantine/spotlight/-/spotlight-8.2.1.tgz#b9f696b565d9de871496a2ed81be6a57be1381c2"
+  integrity sha512-muQBHlWwo00wWxZktgt0+BhLIo1kLNk8XKTd2vwQ/wdzxvBb9EmK1ZVjD65l68wJu9IfIrpzgeSU81twLDZzaQ==
   dependencies:
-    "@mantine/store" "8.0.2"
+    "@mantine/store" "8.2.1"
 
-"@mantine/store@8.0.2":
-  version "8.0.2"
-  resolved "https://registry.yarnpkg.com/@mantine/store/-/store-8.0.2.tgz#a2650bae578ba74afb78eab45a903bf7c60fdfd0"
-  integrity sha512-/LuizGWAXjVnLLZ55f0QYotiqb8GlHpIb4KRf4LqRkbsA6UAZEVb6beuk0vI2Azf6vfuh7sTHu1xVC5zI6C+Cw==
+"@mantine/store@8.2.1":
+  version "8.2.1"
+  resolved "https://registry.yarnpkg.com/@mantine/store/-/store-8.2.1.tgz#222e62d87025b03cf881561d66b773c92d35610a"
+  integrity sha512-4DAVJcI5Sa8Zez/23DV4eipYbqRfw7r+UkuWczPFyhAU+BZdfIql1gFipojAlR0FpWbB8aL0F7wFKNKfkZ0YCQ==
 
 "@nicolo-ribaudo/chokidar-2@2.1.8-no-fsevents.3":
   version "2.1.8-no-fsevents.3"
