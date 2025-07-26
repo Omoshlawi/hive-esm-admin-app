@@ -83,6 +83,7 @@ export function setup(app: PiletApi) {
     ),
     {
       type: "admin",
+      order: 0,
     }
   );
   app.registerMenu(
@@ -96,6 +97,7 @@ export function setup(app: PiletApi) {
     ),
     {
       type: "admin",
+      order: 4,
     }
   );
   app.registerMenu(
@@ -109,6 +111,7 @@ export function setup(app: PiletApi) {
     ),
     {
       type: "admin",
+      order: 3,
     }
   );
   app.registerMenu(
@@ -122,6 +125,7 @@ export function setup(app: PiletApi) {
     ),
     {
       type: "admin",
+      order: 2,
     }
   );
   app.registerMenu(
@@ -135,6 +139,7 @@ export function setup(app: PiletApi) {
     ),
     {
       type: "admin",
+      order: 1,
     }
   );
   app.registerMenu(
@@ -148,6 +153,7 @@ export function setup(app: PiletApi) {
     ),
     {
       type: "admin",
+      order: 5,
     }
   );
 }
